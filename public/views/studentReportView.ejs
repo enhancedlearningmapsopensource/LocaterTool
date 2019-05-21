@@ -1,0 +1,94 @@
+<div class="reportviewerclass" id="studentreportviewer" style="display:block" onmouseup="document.documentElement.style.cursor='';"
+    onmousedown="">
+    <h3 class="windowh3">Report Viewer</h3>
+    <%var reportViewObj=JSON.parse(JSON.stringify(stdreportObj));%>
+        <span style="position:absolute;top:0.75em;right:0.75em;">
+            <button onclick="locater.printDiv('putstdreport', 'printDiv', 'Student Report');">print</button>
+            <button onclick="locater.exportStudentTestToCSV('<%=escape(JSON.stringify(stdreportObj))%>')">export to CSV</button>
+            <button onclick="document.getElementById('putstdreport').innerHTML=''; document.getElementById('studentreport').innerHTML=''; document.getElementById('studentreport').style.display='none';"
+                style="font-weight:bold;">x</button>
+        </span>
+        <div id="putstdreport" style="position:absolute; top: 53px; height:calc(100% - 63px); width:calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: auto; -webkit-overflow-scrolling: touch;">
+            <h2>
+                <em>
+                    <%= locater.getStudentName(reportViewObj.studentTestDetails[0].STUDENT_NAME) %>
+                </em>: Student Summary Report
+            </h2>
+            <br>
+            <br>
+            <%for(var i=0;i<Object.keys(reportViewObj.studentTestDetails).length;i++){%>
+                <%
+                var outcome=reportViewObj.studentTestDetails[i].OUTCOME + " of " + reportViewObj.studentTestDetails[i].NOOFQUEST;
+                var version = (reportViewObj.studentTestDetails[i].TEST_VERSION)? " (" + reportViewObj.studentTestDetails[i].TEST_VERSION + ")" :"";
+                var studTitle = (reportViewObj.studentTestDetails[i].STUDENT_TITLE)? "("+reportViewObj.studentTestDetails[i].STUDENT_TITLE + version + ")":"";
+                var testDetails=reportViewObj.studentTestDetails[i].TEST_TITLE + studTitle;
+                 %>
+                    <table style="margin:2em;" id="stdreporttable_<%=reportViewObj.studentTestDetails[i].TEST_ID%>">
+                        <tbody>
+                            <tr>
+                                <th>Locater Tool Name</th>
+                                <th>Due Date</th>
+                                <th>Date Finished</th>
+                                <th>Outcome</th>
+                                <%var count=1;%>
+                                    <% for(var j=0;j<Object.keys(reportViewObj.studentTestDetails[i].questionDetails).length;j++){%>
+                                        <%  var questionId=reportViewObj.studentTestDetails[i].questionDetails[j].QUESTION_ID;
+                            var testId=reportViewObj.studentTestDetails[i].TEST_ID;
+                            var passwordId=reportViewObj.studentTestDetails[i].PASSWORD_ID;
+                            var questionType=reportViewObj.studentTestDetails[i].questionDetails[j].QUESTION_TYPE;
+                            %>
+                                            <th>
+                                                <a href="#" onclick="locater.getQuestionReport('<%=questionId%>','<%=testId%>','<%=passwordId%>','<%=questionType%>','studentview')">
+                                                    <%=reportViewObj.studentTestDetails[i].questionDetails[j].QUESTION_ORDER + reportViewObj.studentTestDetails[i].questionDetails[j].PART_ORDER%>
+                                                </a>
+                                            </th>
+                                            <%};%>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span style="white-space:nowrap;">&nbsp;&nbsp;&nbsp;
+                                        <%=testDetails%>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="float:right;white-space:nowrap;margin-right:3px;margin-left:3px;">&nbsp;&nbsp;&nbsp;
+                                        <%=reportViewObj.studentTestDetails[i].DUE_DATE%>&nbsp;&nbsp;&nbsp;
+                                            <%=reportViewObj.studentTestDetails[i].DUE_TIME%>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="float:right;white-space:nowrap;margin-right:3px;margin-left:3px;">&nbsp;&nbsp;&nbsp;
+                                        <%=reportViewObj.studentTestDetails[i].DATE_FINISHED%>
+                                    </span>
+                                </td>
+                                <td style="font-weight:bold;text-align:center;">
+                                    <a href="#" target="_blank" onclick="event.preventDefault(); locater.displayTest('<%=reportViewObj.studentTestDetails[i].TEST_ID%>', '<%=reportViewObj.studentTestDetails[i].PASSWORD_ID%>','<%=reportViewObj.studentTestDetails[i].STUDENT_ID%>'); return false;">
+                                        <%=outcome%>
+                                    </a>
+                                </td>
+                                <%for(var l=0;l<Object.keys(reportViewObj.studentTestDetails[i].questionDetails).length;l++){
+                                        var resp=reportViewObj.studentTestDetails[i].questionDetails[l].RESPONSE;
+                                        if(resp == null || resp == ''){
+                                            resp='-';
+                                        }
+                                      if(reportViewObj.studentTestDetails[i].questionDetails[l].RESPONSE_VALID == true){ %>
+                                    <td id="results_0_0_0" style="text-align:center;">
+                                        <span style="color:#080;font-weight:bold;">&#10004;</span>
+                                    </td>
+                                    <%}else{%>
+                                        <td id="results_0_0_0" style="text-align:center;">
+                                            <span>
+                                                <%=resp%>
+                                            </span>
+                                        </td>
+                                        <%};};%>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <br>
+                    <%};%>
+
+        </div>
+</div>

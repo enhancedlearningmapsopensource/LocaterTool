@@ -1,0 +1,68 @@
+<% var assignedTestObj=JSON.parse(JSON.stringify(restoreAssigned));
+var jsonRosterObj=JSON.parse(JSON.stringify(rosterObject));
+if(assignedTestObj && assignedTestObj.studentDetails){%>
+    <% var totalstds=Object.keys(assignedTestObj.studentDetails).length;
+    var option1= assignedTestObj.studentsCompleted +" / "+ totalstds;%>
+        <tr id='assignedRow_<%=assignedTestObj.ID%>_<%=assignedTestObj.PASSWORD_ID%>'>
+            <td>
+                <div style='font-weight:bold;' id='testId_<%=assignedTestObj.ID%>'>
+                    <%=assignedTestObj.TEST_TITLE%>
+                </div>
+                <div style='font-style:italic;margin:0.25em;text-overflow: ellipsis;max-width: 43ch;overflow-wrap: break-word;'>
+                    <%=assignedTestObj.NOTE_TO_SELF%>
+                </div>
+            </td>
+            <td style='text-align:center;display:none;'>Pre/Post</td>
+            <td title='<%=assignedTestObj.DUE_TIMESTAMP%> <%=assignedTestObj.DUE_HOURS%>'>
+                <%=assignedTestObj.DUE_DATE%>&nbsp;&nbsp;&nbsp;
+                    <%=assignedTestObj.DUE_TIME%>
+            </td>
+            <td style='text-align:center;'>
+                <%=assignedTestObj.PASSWORD%>
+            </td>
+            <td>
+                <select id='studentlist_<%=assignedTestObj.PASSWORD%>' style='width:10em;overflow-y: hidden;' onchange="locater.setDefaultStudent('<%=assignedTestObj.PASSWORD%>');">
+                    <option id='0' style='display:none'>
+                        <%=option1%>
+                    </option>
+                    <% if(assignedTestObj.studentsCompleted >0){%>
+                        <option id='completed '>
+                            <label>Completed:</label>
+                        </option>
+
+                        <% for(var j=0;j<Object.keys(assignedTestObj.studentDetails).length;j++){%>
+                            <% if(assignedTestObj.studentDetails[j].ISCOMPLETE==true){%>
+                                <option id='<%=assignedTestObj.studentDetails[j].STUDENT_ID%>'>&nbsp;&nbsp;
+                                    <%= locater.getStudentName(assignedTestObj.studentDetails[j].USERNAME)%>
+                                </option>
+                                <%};};%>
+                                    <option> </option>
+                                    <%};%>
+                                        <% if(assignedTestObj.incompleteCount >0){%>
+                                            <option id='notcompleted'>
+                                                </br>
+                                                </br>
+                                                <label>Not Completed:</label>
+                                            </option>
+                                            <% for(var k=0;k<Object.keys(assignedTestObj.studentDetails).length;k++){%>
+                                                <% if(assignedTestObj.studentDetails[k].ISCOMPLETE==false){%>
+                                                    <option id='<%=assignedTestObj.studentDetails[k].STUDENT_ID%>'>&nbsp;&nbsp;
+                                                        <%=locater.getStudentName(assignedTestObj.studentDetails[k].USERNAME)%>
+                                                    </option>
+                                                    <%};};%>
+                                                        <%};%>
+                </select>
+            </td>
+            <td style=' text-align:center;display:none;'>
+                <a href='testtaker ' target='_blank '>link</a>
+            </td>
+            <td style='text-align:center; '>
+                <a href='# ' onclick="locater.editTestDetails('<%=JSON.stringify(assignedTestObj)%>','<%=JSON.stringify(jsonRosterObj)%>') ">Edit</a>
+            </td>
+            <td style='text-align:center; '>
+                <% if(assignedTestObj.studentsCompleted >0){%>
+                    <a href='#' onclick="locater.viewTestReport('<%=JSON.stringify(assignedTestObj)%>')">View</a>
+                    <%};%>
+            </td>
+        </tr>
+        <%};%>

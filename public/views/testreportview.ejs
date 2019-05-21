@@ -1,0 +1,400 @@
+<div class="testviewerclass" id="testviewer" style="display:block;" onmouseup="document.documentElement.style.cursor='';"
+    onmousedown="">
+    <h3 class="windowh3" id="reportviewer">Report Viewer</h3>
+    <%var reportViewObj=JSON.parse(JSON.stringify(reportObj));
+    var flag;%>
+        <span style="position:absolute;top:0.75em;right:0.75em;">
+            <button onclick="locater.printDiv('puttestreport', 'printDiv', 'Report')">print</button>
+            <button onclick="locater.exportTestReportToCSV('<%=escape(JSON.stringify(reportViewObj))%>','<%=escape(JSON.stringify(testObject))%>');">export to CSV</button>
+            <button onclick="document.getElementById('puttestreport').innerHTML=''; document.getElementById('testreport').innerHTML='';document.getElementById('testreport').style.display='none';"
+                style="font-weight:bold;">x</button>
+        </span>
+        <div id="puttestreport" style="position: absolute; top: 53px; height: calc(100% - 63px);
+                width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: auto; -webkit-overflow-scrolling:
+                touch; ">
+            <h2>
+                <em>
+                    <%=reportViewObj.ASSIGNED_TEST_TITLE%>
+                </em> : Summary Report
+                <%if(reportViewObj.DUE_DATE){%>
+                    <div style="font-size:0.5em;margin-left:3em;font-style:italic;display:inline-block;vertical-align:middle; ">due
+                        <span style="white-space:nowrap;">
+                            <%=reportViewObj.DUE_DATE%>
+                        </span>
+                        <span style="float:right;white-space:nowrap;">&nbsp;&nbsp;&nbsp;
+                            <%=reportViewObj.DUE_TIME%>
+                        </span>
+                    </div>
+                    <%};%>
+            </h2>
+            <br>
+            <br>
+            <table style="margin:2em; " id="reporttable">
+                <tbody>
+                    <%if(reportViewObj.studentTestADetails!=null && reportViewObj.studentTestADetails.length>0){
+                            var testDetails=reportViewObj.studentTestADetails[0].TEST_TITLE+ "( " + reportViewObj.studentTestADetails[0].STUDENT_TITLE + " (" + reportViewObj.studentTestADetails[0].TEST_VERSION +")) ";
+                            %>
+                        <tr>
+                            <td colspan="6 " style="border:none;font-size:1.25em;font-weight:bold; ">
+                                <%=testDetails%>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Student</th>
+                            <th style="display:none; ">Locater Tool Name</th>
+                            <th style="display:none; ">Due Date</th>
+                            <th>Date Finished</th>
+                            <th>Outcome</th>
+                            <%var count=1;
+                        for(var j=0;j<Object.keys(reportViewObj.studentTestADetails[0].questionDetails).length;j++){
+                            var questionId=reportViewObj.studentTestADetails[0].questionDetails[j].QUESTION_ID;
+                            var testId=reportViewObj.studentTestADetails[0].TEST_ID;
+                            var passwordId=reportViewObj.PASSWORD_ID;
+                            var questionType=reportViewObj.studentTestADetails[0].questionDetails[j].QUESTION_TYPE;
+                            %>
+                                <th>
+                                    <a href="# " onclick="locater.getQuestionReport( '<%=questionId%>', '<%=testId%>','<%=passwordId%>', '<%=questionType%>','testview');">
+                                        <%=reportViewObj.studentTestADetails[0].questionDetails[j].QUESTION_ORDER + reportViewObj.studentTestADetails[0].questionDetails[j].PART_ORDER%>
+                                    </a>
+                                </th>
+                                <%};%>
+                        </tr>
+                        <%for(var i=0;i<Object.keys(reportViewObj.studentTestADetails).length;i++){
+                            var outcome= reportViewObj.studentTestADetails[i].OUTCOME + " of " + reportViewObj.studentTestADetails[i].NOOFQUEST; %>
+                            <tr>
+                                <td style="font-weight:bold;">
+                                    <a href="# " onclick="locater.getStudentReport('<%=reportViewObj.studentTestADetails[i].STUDENT_ID%>');">
+                                        <%= locater.getStudentName(reportViewObj.studentTestADetails[i].STUDENT_NAME) %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span style="float:right;white-space:nowrap;margin-right:3px;margin-left:3px; ">&nbsp;&nbsp;&nbsp;
+                                        <%=reportViewObj.studentTestADetails[i].DATE_FINISHED%>
+                                    </span>
+                                </td>
+                                <td style="font-weight:bold;text-align:center; ">
+                                    <a href="# " target="_blank " onclick="event.preventDefault(); locater.displayTest('<%=reportViewObj.studentTestADetails[i].TEST_ID%>', '<%=reportViewObj.PASSWORD_ID%>','<%=reportViewObj.studentTestADetails[i].STUDENT_ID%>'); return false; ">
+                                        <%=outcome%>
+                                    </a>
+                                </td>
+                                <%for(var k=0;k<Object.keys(reportViewObj.studentTestADetails[i].questionDetails).length;k++){
+                                    var resp=reportViewObj.studentTestADetails[i].questionDetails[k].RESPONSE;
+                                    if(resp == null || resp == ''){
+                                        resp='-';
+                                    }
+                                if(reportViewObj.studentTestADetails[i].questionDetails[k].ISVALID == true){%>
+                                    <td id="results_0_0_0 " style="text-align:center;">
+                                        <span style="color:#080;font-weight:bold; ">&#10004;</span>
+                                    </td>
+                                    <%}else{%>
+                                        <td id="results_0_0_0 " style="text-align:center;">
+                                            <span>
+                                                <%=resp%>
+                                            </span>
+                                        </td>
+                                        <%};};%>
+                            </tr>
+                            <%};%>
+                                <tr>
+                                    <th colspan="3" style="text-align:right;vertical-align:top; ">% correct</th>
+                                    <!--10000_0-->
+                                    <%for(var k=0;k<Object.keys(reportViewObj.studentTestADetails[0].questionDetails).length;k++){%>
+                                        <%var percent=reportViewObj.studentTestADetails[0].questionDetails[k].PERCENT;
+                                        if(percent == '0.0%'){
+                                            percent='0%';
+                                        }else if(percent == '100.0%'){
+                                            percent='100%';
+                                        };
+                                        %>
+                                            <td style="vertical-align:middle;text-align:center; ">
+                                                <div style="font-weight:bold;color:#080; ">
+                                                    <%=percent%>
+                                                </div>
+                                            </td>
+                                            <%};%>
+                                </tr>
+                                <tr>
+                                    <th colspan="3 " style="text-align:right;vertical-align:top; ">Most common incorrect response(s)</th>
+                                    <% for(var k=0;k<Object.keys(reportViewObj.studentTestADetails[0].questionDetails).length;k++){%>
+                                        <% flag='notset';
+                                        for(var l=0;l<Object.keys(reportViewObj.studentTestADetails[0].incorrectAResponse).length;l++){
+                                                if(reportViewObj.studentTestADetails[0].questionDetails[k].QUESTION_ID == reportViewObj.studentTestADetails[0].incorrectAResponse[l].QUESTION_ID){
+                                                    flag='set';
+                                                    %>
+                                            <td style="vertical-align:middle;text-align:center; ">
+                                                <%=reportViewObj.studentTestADetails[0].incorrectAResponse[l].INCORRECT_RESPONSE%>
+                                            </td>
+                                            <%};};%>
+                                                <% if(flag == 'notset'){ %>
+                                                    <td style="vertical-align:middle;text-align:center; ">
+                                                        <%=" - "%>
+                                                    </td>
+
+                                                    <%};%>
+
+                                                        <%};%>
+                                </tr>
+                                <tr>
+                                    <th colspan="3 " style="text-align:right;vertical-align:top; ">Node(s) for common incorrect</th>
+                                    <%for(var k=0;k<Object.keys(reportViewObj.studentTestADetails[0].questionDetails).length;k++){
+                                        flag='notset';%>
+                                        <% for(var l=0;l<Object.keys(reportViewObj.studentTestADetails[0].incorrectAResponse).length;l++){
+                                        if(reportViewObj.studentTestADetails[0].questionDetails[k].QUESTION_ID == reportViewObj.studentTestADetails[0].incorrectAResponse[l].QUESTION_ID){
+                                            var nodelength=Object.keys(reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes).length; 
+                                            flag='set';%>
+                                            <td style="vertical-align:top;">
+                                                <span style="white-space:nowrap;">
+                                                    <% if(nodelength>0){
+                                                    for(m=0;m<nodelength;m++){
+                                                        var node=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].nodes;
+                                                        var antinode=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].antinodes;
+                                                        var subject=reportViewObj.studentTestADetails[0].incorrectAResponse[0].SUBJECT_NODE_PREFIX;
+                                                        var nodeTitle=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].nodetitle;
+                                                        var antiTitle=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].antititle;
+                                                        %>
+                                                    <b>
+                                                        <%=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].response + ":"%>
+                                                    </b>
+                                                    <% if(reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].nodes){
+                                                        if(nodeTitle!=null){
+                                                            nodeTitle=nodeTitle.replace(/&#\d+;/g, asciiCodeToChar);
+                                                        }                                                       
+                                                        %>
+                                                    <a href="#" onclick="locater.getNodeTitle('<%=node%>','<%=subject%>');" title="<%=nodeTitle%>">
+                                                        <%=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].nodes%>
+                                                    </a>&nbsp;
+                                                    <% }%>
+                                                    <% if(reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].antinodes){ 
+                                                        if(antiTitle!=null){
+                                                            antiTitle=antiTitle.replace(/&#\d+;/g, asciiCodeToChar);
+                                                        } 
+                                                        %>
+                                                        <span>
+                                                            <a href="#" onclick="locater.getNodeTitle('<%=antinode%>','<%=subject%>');" title="<%=antiTitle%>">
+                                                                <%=reportViewObj.studentTestADetails[0].incorrectAResponse[l].commonNodes[m].antinodes%>
+                                                            </a>
+                                                        </span>
+                                                     <% }%>
+                                                        <%};}else{%>
+                                                            <b>
+                                                                <%=" - "%>
+                                                            </b>
+
+                                                            <%};%>
+                                                </span>
+                                                <br>
+                                            </td>
+                                            <%};};%>
+                                                <%if(flag=='notset'){%>
+                                                    <td style="vertical-align:top;">
+                                                        <span style="white-space:nowrap;">
+                                                            <%=' - '%>
+                                                        </span>
+                                                    </td>
+                                                    <%};%>
+
+                                                        <%};%>
+                                </tr>
+                                <tr style="border:none;">
+                                    <td style="border:none;">&nbsp;</td>
+                                </tr>
+                                <%};%>
+                                    <!--student Test Report table whose version is 'B'-->
+                                    <% if((reportViewObj.studentTestBDetails!=null) && (reportViewObj.studentTestBDetails.length>0)){
+                                var testDetails=reportViewObj.studentTestBDetails[0].TEST_TITLE+ "(" + reportViewObj.studentTestBDetails[0].STUDENT_TITLE + " (" + reportViewObj.studentTestBDetails[0].TEST_VERSION + "))"; %>
+                                        <tr>
+                                            <td colspan="6" style="border:none;font-size:1.25em;font-weight:bold;">
+                                                <%=testDetails%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Student</th>
+                                            <th style="display:none;">Locater Tool Name</th>
+                                            <th style="display:none;">Due Date</th>
+                                            <th>Date Finished</th>
+                                            <th>Outcome</th>
+                                            <%var count=1;%>
+                                                <%for(var j=0;j<Object.keys(reportViewObj.studentTestBDetails[0].questionDetails).length;j++){%>
+                                                    <% var questionId=reportViewObj.studentTestBDetails[0].questionDetails[j].QUESTION_ID; 
+                                                var testId=reportViewObj.studentTestBDetails[0].TEST_ID; 
+                                                var passwordId=reportViewObj.PASSWORD_ID;
+                                                var questionType=reportViewObj.studentTestBDetails[0].questionDetails[j].QUESTION_TYPE;
+                                                %>
+                                                        <th>
+                                                            <a href="#" onclick="locater.getQuestionReport('<%=questionId%>','<%=testId%>','<%=passwordId%>','<%=questionType%>','testview')">
+                                                                <%=reportViewObj.studentTestBDetails[0].questionDetails[j].QUESTION_ORDER + reportViewObj.studentTestBDetails[0].questionDetails[j].PART_ORDER%>
+                                                            </a>
+                                                        </th>
+                                                        <%};%>
+                                        </tr>
+                                        <%for(var i=0;i<Object.keys(reportViewObj.studentTestBDetails).length;i++){
+                                            var outcome=reportViewObj.studentTestBDetails[i].OUTCOME + " of " + reportViewObj.studentTestBDetails[i].NOOFQUEST; %>
+                                            <tr>
+                                                <td style="font-weight:bold;">
+                                                    <a href="#" onclick="locater.getStudentReport('<%=reportViewObj.studentTestBDetails[i].STUDENT_ID%>');">
+                                                        <%= locater.getStudentName(reportViewObj.studentTestBDetails[i].STUDENT_NAME)%>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <span style="float:right;white-space:nowrap;margin-right:3px;margin-left:3px;">&nbsp;&nbsp;&nbsp;
+                                                        <%=reportViewObj.studentTestBDetails[i].DATE_FINISHED%>
+                                                    </span>
+                                                </td>
+                                                <td style="font-weight:bold;text-align:center;">
+                                                    <a href="#" target="_blank" onclick="event.preventDefault(); locater.displayTest('<%=reportViewObj.studentTestBDetails[i].TEST_ID%>', '<%=reportViewObj.PASSWORD_ID%>','<%=reportViewObj.studentTestBDetails[i].STUDENT_ID%>'); return false;">
+                                                        <%=outcome%>
+                                                    </a>
+                                                </td>
+                                                <%for(var k=0;k<Object.keys(reportViewObj.studentTestBDetails[i].questionDetails).length;k++){
+                                                var resp=reportViewObj.studentTestBDetails[i].questionDetails[k].RESPONSE;
+                                                if(resp == null || resp == ''){
+                                                    resp='-';
+                                                 }
+                                             if(reportViewObj.studentTestBDetails[i].questionDetails[k].ISVALID == true){%>
+                                                    <td id="results_0_0_0" style="text-align:center;">
+                                                        <span style="color:#080;font-weight:bold;">&#10004;</span>
+                                                    </td>
+                                                    <%}else{%>
+                                                        <td id="results_0_0_0" style="text-align:center;">
+                                                            <span>
+                                                                <%=resp%>
+                                                            </span>
+                                                        </td>
+                                                        <%};};%>
+                                            </tr>
+                                            <%};%>
+                                                <tr>
+                                                    <th colspan="3" style="text-align:right;vertical-align:top;">% correct</th>
+                                                    <!--10000_0-->
+                                                    <%for(var k=0;k<Object.keys(reportViewObj.studentTestBDetails[0].questionDetails).length;k++){%>
+                                                        <%var percent=reportViewObj.studentTestBDetails[0].questionDetails[k].PERCENT;
+                                                    if(percent == '0.0%'){
+                                                        percent='0%';
+                                                    }else if(percent == '100.0%'){
+                                                        percent='100%';
+                                                    };
+                                                    %>
+                                                            <td style="vertical-align:middle;text-align:center;">
+                                                                <div style="font-weight:bold;color:#080;">
+                                                                    <%=percent%>
+                                                                </div>
+                                                            </td>
+                                                            <%};%>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3" style="text-align:right;vertical-align:top;">Most common incorrect response(s)</th>
+                                                    <% for(var k=0;k<Object.keys(reportViewObj.studentTestBDetails[0].questionDetails).length;k++){%>
+                                                        <% flag='notset';
+                                                        for(var l=0;l<Object.keys(reportViewObj.studentTestBDetails[0].incorrectBResponse).length;l++){
+  
+                                                            if(reportViewObj.studentTestBDetails[0].questionDetails[k].QUESTION_ID == reportViewObj.studentTestBDetails[0].incorrectBResponse[l].QUESTION_ID){
+                                                                flag='set';
+                                                                %>
+                                                            <td style="vertical-align:middle;text-align:center;">
+                                                                <%=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].INCORRECT_RESPONSE %>
+                                                            </td>
+                                                            <%};};%>
+                                                                <% if(flag=='notset'){%>
+                                                                    <td style="vertical-align:middle;text-align:center;">
+                                                                        <%=' - '%>
+                                                                    </td>
+                                                                    <%}%>
+                                                                        <%};%>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3" style="text-align:right;vertical-align:top;">Node(s) for common incorrect</th>
+                                                    <% for(var k=0;k<Object.keys(reportViewObj.studentTestBDetails[0].questionDetails).length;k++){
+                                                        flag='notset';
+                                                         for(var l=0;l<Object.keys(reportViewObj.studentTestBDetails[0].incorrectBResponse).length;l++){
+                                                            if(reportViewObj.studentTestBDetails[0].incorrectBResponse[l].QUESTION_ID == reportViewObj.studentTestBDetails[0].questionDetails[k].QUESTION_ID) {
+                                                                var nodelength=Object.keys(reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes).length;
+                                                                flag='set';
+                                                                %>
+                                                        <td style="vertical-align:top;">
+                                                            <span style="white-space:nowrap;">
+                                                                <% if(nodelength>0){
+                                                                for(m=0; m<nodelength; m++){
+                                                                        var node=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].nodes;
+                                                                        var antinode=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].antinodes;
+                                                                        var subject=reportViewObj.studentTestBDetails[0].incorrectBResponse[0].SUBJECT_NODE_PREFIX;
+                                                                        var nodeTitle=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].nodetitle;
+                                                                        var antiTitle=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].antititle;
+                                                                        %>
+                                                                    <b>
+                                                                        <%=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].response + ":"%>
+                                                                    </b>
+                                                                    <% if(reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].nodes){
+                                                                        if(nodeTitle!=null){
+                                                                            nodeTitle=nodeTitle.replace(/&#\d+;/g, asciiCodeToChar);
+                                                                        }                                                                                                     
+                                                                        %>
+                                                                    <a href="#" onclick="locater.getNodeTitle('<%=node%>','<%=subject%>');" title="<%=nodeTitle%>">
+                                                                        <%=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].nodes%>
+                                                                    </a>&nbsp;
+                                                                    <% }%>
+                                                                    <% if(reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].antinodes){ 
+                                                                        if(antiTitle!=null){
+                                                                            antiTitle=antiTitle.replace(/&#\d+;/g, asciiCodeToChar);
+                                                                        }                                                                     
+                                                                        %>
+                                                                        <span>
+                                                                            <a href="#" onclick="locater.getNodeTitle('<%=antinode%>','<%=subject%>');" title="<%=antiTitle%>">
+                                                                                <%=reportViewObj.studentTestBDetails[0].incorrectBResponse[l].commonNodes[m].antinodes%>
+                                                                            </a>
+                                                                        </span>
+                                                                     <% }%>
+                                                                    <%};}else{%>
+                                                                        <b>
+                                                                            <%=" - "%>
+                                                                        </b>
+
+                                                                        <%};%>
+
+                                                            </span>
+                                                            <br>
+                                                        </td>
+
+                                                        <%};};%>
+                                                            <% if(flag=='notset'){%>
+                                                                <td style="vertical-align:top;">
+                                                                    <span style="white-space:nowrap;">
+                                                                        <%=' - '%>
+                                                                    </span>
+                                                                </td>
+
+                                                                <%}%>
+
+                                                                    <%};%>
+                                                </tr>
+                                                <%};%>
+                                                    <tr style="border:none;">
+                                                        <td style="border:none;">&nbsp;</td>
+                                                    </tr>
+                                                    <% var testObj=JSON.parse(JSON.stringify(testObject));
+                                                        var stdLen=Object.keys(testObj.studentDetails).length;%>
+                                                        <% if(stdLen!=parseInt(testObj.studentsCompleted)){%>
+                                                            <tr>
+                                                                <td style="border:none;font-size:1.25em;font-weight:bold;">Incomplete</td>
+                                                            </tr>
+                                                            <%for(var i=0;i<stdLen;i++){
+                                                                if(testObj.studentDetails[i].ISCOMPLETE==false){ %>
+                                                                <tr>
+                                                                    <td style="font-weight:bold;">
+                                                                        <% if(parseInt(testObj.studentDetails[i].VIEW_REPORT)>0){%>
+                                                                            <a href='#' style="font-weight:bold;" onclick="locater.getStudentReport('<%=testObj.studentDetails[i].STUDENT_ID%>');">
+                                                                                <%= locater.getStudentName(testObj.studentDetails[i].USERNAME)%>
+                                                                            </a>
+                                                                            <%}else{%>
+                                                                                <b>
+                                                                                    <%=locater.getStudentName(testObj.studentDetails[i].USERNAME)%>
+                                                                                </b>
+                                                                                <%};%>
+                                                                    </td>
+                                                                </tr>
+                                                                <%};};%>
+                                                                    <%};%>
+                </tbody>
+            </table>
+            <br>
+        </div>
+</div>

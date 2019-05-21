@@ -1,0 +1,83 @@
+<div style='margin:1em'>
+    <h2 style='margin:1em;vertical-align:middle;display:inline-block;'>Saved Tests</h2>
+    <span style="padding-left: 15%;">
+        <label style='vertical-align:middle;'>
+        <input type='checkbox' id='showDeletedTests' style='margin:0;'> Show deleted and overridden tests
+        </label>
+    </span>
+    <table>
+        <thead>
+            <tr>
+                <th>Test ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Questions</th>
+                <th>Date Created</th>
+                <th>Revision</th>
+                <th>Version</th>
+                <th>Public</th>
+                <th colspan='3'></th>
+            </tr>
+            <tbody id='testsTable'>
+                <% var jsonObj=JSON.parse(JSON.stringify(savedTests));
+                    for (var i = 0; i < Object.keys(jsonObj).length; i++) {
+                        var rowId = "testRowID_"+jsonObj[i].ACTIVE_TEST_ID+((!jsonObj[i].ISACTIVE)? '_'+i:'');
+                        var titleText = ""; 
+                             for(var j=0;j< jsonObj[i].Revision.length;j++){ 
+                                 titleText+=  "\n"+ jsonObj[i].Revision[j].CREATED_DATE +", "+ jsonObj[i].Revision[j].AUTHOR;
+                              } %>
+                    <tr id="<%=rowId%>" style="<%= jsonObj[i].ISACTIVE == true ? '': 'color:#990000;' %>">
+                        <td style="text-align: right">
+                            <%=jsonObj[i].ACTIVE_TEST_ID%>
+                        </td>
+                        <td>
+                            <b>
+                                <%=jsonObj[i].TEST_TITLE%>
+                            </b>:
+                            <i>
+                                <%=jsonObj[i].STUDENT_TITLE%>
+                            </i>
+                        </td>
+                        <td>
+                            <%=jsonObj[i].AUTHOR%>
+                        </td>
+                        <td style="text-align:center;">
+                            <%=jsonObj[i].QUESTION_COUNT%>
+                        </td>
+                        <td>
+                            <%=jsonObj[i].CREATED_DATE%>
+                        </td>
+                        <td title=" Revision History: &nbsp;&nbsp;&nbsp;  <%=titleText%> " style="cursor:help;text-align:center;">
+                            <%=jsonObj[i].RevisionCount%>
+                        </td>
+                        <td style="text-align:center; cursor:pointer;" onmouseleave="if(document.getElementById(&quot;testRowID_<%=jsonObj[i].COMPANION_ID%>&quot;)) 
+                            document.getElementById(&quot;testRowID_<%=jsonObj[i].COMPANION_ID%>&quot;).style.boxShadow = &quot;&quot;;"
+                            onmouseenter="if(document.getElementById(&quot;testRowID_<%=jsonObj[i].COMPANION_ID%>&quot;)) 
+                            document.getElementById(&quot;testRowID_<%=jsonObj[i].COMPANION_ID%>&quot;).style.boxShadow = &quot;inset 0px 0px 20px 0px #FFFF00&quot;;">
+                            <%=jsonObj[i].VERSION%>
+                        </td>
+                        <td style="text-align:center;">
+                            <% if(jsonObj[i].ISPUBLIC){ %>
+                                ✔
+                                <% }%>
+                        </td>
+                        <td>
+                            <a href="#" onclick="loadTest('<%=jsonObj[i].ID%>','<%=rowId%>');">edit</a>
+                        </td>
+                        <td>
+                            <a href="/locatertool/testtaker?testpreview=<%=jsonObj[i].ID%>&amp;" target="_blank" onclick="displaytest(this.href); event.preventDefault(); return false;">preview</a>
+                        </td>
+                        <td>
+                            <% if(jsonObj[i].ISACTIVE){ %>
+                                <a href="#" onclick="deleteTest('<%=jsonObj[i].ACTIVE_TEST_ID%>')">delete</a>
+                                <% }%>
+
+                        </td>
+                    </tr>
+                    <% }; %>
+            </tbody>
+    </table>
+    <br>
+    <hr>
+
+</div>

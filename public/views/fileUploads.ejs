@@ -1,0 +1,62 @@
+<div class='testviewerclass' id='fileuploaddiv' style='top: calc(50% - 240px);bottom: calc(50% - 240px);left:calc(50% - 425px);right:calc(50% - 425px);'>
+    <h3>File Uploads</h3>
+    <span style='position:absolute;top:0.75em;right:0.75em;white-space:nowrap;'>
+        <button onclick='document.getElementById("fileuploaddiv").style.display="none";' style='font-weight:bold;vertical-align:middle;'>x</button>
+    </span>
+    <div style='text-align:left;position: absolute; top: 53px; height: calc(100% - 63px); width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: hidden; -webkit-overflow-scrolling: touch;'>
+        <div style='margin:0;height:100%;overflow-y:auto;'>
+            <div style='margin:1em;'>
+                <h3>Upload New File</h3>
+                <div style='margin:1em;margin-top:2em;'>
+                    <input type='file' id='fileupload' name='uploadedFile'>
+                    <button id='uploadFileBtn'>Upload</button>
+                </div>
+                <br>
+                <hr>
+                <h3>Already Uploaded Files</h3>
+                <div style='margin-top:1em;'>
+                    <div id='fileslist'>
+                        <table style="width: 95%">
+                            <tbody>
+                                <tr style="text-align:center;">
+                                    <th>Name</th>
+                                    <th>Full URL</th>
+                                    <th>Size(kB)</th>
+                                    <th>Timestamp</th>
+                                    <th>Delete</th>
+                                </tr>
+                                <% var jsonObj=JSON.parse(JSON.stringify(uploadedFiles));
+                                    for (var i = 0; i < Object.keys(jsonObj).length; i++) { 
+                                        var fullURL =  document.location.origin+''+jsonObj[i].Path;
+                                        %>
+                                    <tr id="uploadedFiles<%=i%>">
+                                        <td>
+                                            <a href="<%=fullURL%>" target="_blank">
+                                                <%=jsonObj[i].FileName%>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="tooltip">
+                                                <span class="tooltiptext" id="toolTip_<%=i%>">Click to Copy</span>
+                                                <input type="text" id="input_<%=i%>" size="28" onclick="copyData('<%=i%>')" value="<%=fullURL%>" onmouseout="updateToolTip('<%=i%>')" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <%= (Math.round(jsonObj[i].Size/1024)).toLocaleString() %>
+                                        </td>
+                                        <td>
+                                            <%=(new Date(jsonObj[i].TimeStamp)).toLocaleString() %>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span class="pseudolink" onclick="deleteFile('<%=jsonObj[i].FileName%>');">×</span>
+                                        </td>
+                                    </tr>
+                                    <% }; %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

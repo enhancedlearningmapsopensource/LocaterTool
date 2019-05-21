@@ -1,0 +1,17 @@
+<div id="errorPopUp" style="display:block" class="popupOverlay">
+    <div class="overlay-content overlayShowing">
+        <div class="studentlogin-form">
+            <%if(typeof red !== 'undefined'){%>
+                <h3 style="color:red">
+                    <%} else {%>
+                        <h3>
+                            <%}%>
+                             <p>   <%= err %> </p>
+                        </h3>
+
+                        <div class="activation">
+                            <button type="button" id="popupOKButton">OK</button>
+                        </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+<% var jsonObj=JSON.parse(JSON.stringify(editAssigned));
+var rosterObj=JSON.parse(JSON.stringify(rosterObj));
+        var testId = jsonObj.ID;
+        var title = jsonObj.TEST_TITLE;
+        var pswd = jsonObj.PASSWORD;
+        var isDisabled = (jsonObj.studentsCompleted >0)?"disabled":"";
+        var pwdId=jsonObj.PASSWORD_ID;
+        var selfNote = jsonObj.NOTE_TO_SELF;
+        var elmNote = jsonObj.NOTE_TO_ELM;
+%>
+    <tr id='newassignedRow_<%=testId%>_<%=pwdId%>'>
+        <td style='font-weight:bold;'>
+            <%=title%>
+                <br>
+                <textarea rows='3' cols='25' maxlength="280" placeholder='note to self' id='edittestcomment'><%=selfNote%></textarea>
+                <br>
+                <textarea rows='3' cols='25' maxlength="280" placeholder='note to ELM' id='edittestmessage'><%=elmNote%></textarea>
+        </td>
+        <td>
+            <input type='text' id='editdatepicker' placeholder='optional' style='min-width:4em;width:100%;' onclick="locater.addpikaday('editdatepicker');">
+            <br>
+            <select id='edittimeselect'>
+                <option value='-1' selected>due time</option>
+                <option value='00:00:00'>12:00 AM</option>
+                <option value='01:00:00'>1:00 AM</option>
+                <option value='02:00:00'>2:00 AM</option>
+                <option value='03:00:00'>3:00 AM</option>
+                <option value='04:00:00'>4:00 AM</option>
+                <option value='05:00:00'>5:00 AM</option>
+                <option value='06:00:00'>6:00 AM</option>
+                <option value='07:00:00'>7:00 AM</option>
+                <option value='08:00:00'>8:00 AM</option>
+                <option value='09:00:00'>9:00 AM</option>
+                <option value='10:00:00'>10:00 AM</option>
+                <option value='11:00:00'>11:00 AM</option>
+                <option value='12:00:00'>12:00 PM</option>
+                <option value='13:00:00'>1:00 PM</option>
+                <option value='14:00:00'>2:00 PM</option>
+                <option value='15:00:00'>3:00 PM</option>
+                <option value='16:00:00'>4:00 PM</option>
+                <option value='17:00:00'>5:00 PM</option>
+                <option value='18:00:00'>6:00 PM</option>
+                <option value='19:00:00'>7:00 PM</option>
+                <option value='20:00:00'>8:00 PM</option>
+                <option value='21:00:00'>9:00 PM</option>
+                <option value='22:00:00'>10:00 PM</option>
+                <option value='23:00:00'>11:00 PM</option>
+            </select>
+            <br>
+            <button onclick="{document.getElementById('edittimeselect').value = -1; document.getElementById('editdatepicker').value =''; }">clear</button>
+        </td>
+        <td>
+            <input id='edittestpassword' placeholder='password' <%= isDisabled %> type='text' size='15' value='<%=pswd%>'>
+        </td>
+        <td colspan='2'>
+            <div style='max-width:20em;'>To make individual student assignment adjustments, use the student checkboxes in the roster(s) below.</div>
+            <div id='editrostercheckboxes' style='margin:0.5em;'>
+                <div style='margin:0.5em;'>
+                    <% if(rosterObj!=null){
+                            for (var i=0;i<Object.keys(rosterObj).length;i++){ %>
+                        <label id="rostername_<%=rosterObj[i].ROSTER_ID%>" style='font-weight:bold;'>
+                            <input id='rostercheckbox_<%=rosterObj[i].ROSTER_ID%>' name='editrosternames' type='checkbox' onchange="if(this.checked) locater.checkOnRoster('<%=rosterObj[i].ROSTER_ID%>'); else locater.uncheckRoster('<%=rosterObj[i].ROSTER_ID%>');">
+                            <%=rosterObj[i].ROSTER_NAME%>
+                                <br>
+                        </label>
+                        <%};
+                        };%>
+                </div>
+            </div>
+        </td>
+        <td style='text-align:center;'>
+            <button id='editassigned' onclick="locater.saveAssignedTest('<%=JSON.stringify(jsonObj)%>');" style="margin-bottom: 2px;">save</button>
+            <br/>
+            <button id='deleteassigned' onclick="locater.deleteAssignedTest('<%=JSON.stringify(jsonObj)%>');" style="margin-bottom: 2px;">delete</button>
+            <br/>
+            <button id='cancelassigned' onclick="locater.replaceOld('<%=JSON.stringify(jsonObj)%>','<%=JSON.stringify(rosterObj)%>');"
+                style="margin-bottom: 3px;">cancel</button>
+        </td>
+    </tr>

@@ -1,0 +1,101 @@
+<div id="innerViewRostersdiv" style='margin:1em;'>
+    <% sensitivedata = JSON.parse(localStorage.getItem("sensitive"+ locater.localPostfix())); %>
+    <% var jsonObj=JSON.parse(JSON.stringify(viewRosters));
+     var tempstudentID;
+     locater.showWarningDiv();
+     %>
+    <h2 style='margin-top:2em;'>My Rosters
+        <button onclick="locater.printDiv('classrosterdiv', 'printDiv','Rosters');" style='margin-left:3em;vertical-align:middle;'>print</button>
+        <button onclick="locater.downloadRosters();" style='margin-left:1em;vertical-align:middle;'>EXPORT ALL</button>
+        <button onclick="locater.importFile();" style='margin-left:1em;vertical-align:middle;'>IMPORT</button>
+    </h2>
+        <div id='classrosterdiv' style="margin:1em;">
+     <%
+		for (var i = 0; i < Object.keys(jsonObj).length; i++) { 
+            var stdlength=Object.keys(jsonObj[i].STUDENT_NAMES).length; %>
+                    <div class="rostertableclass" id="rostertableID_<%=jsonObj[i].ROSTER_ID%>" style="display:inline-block;vertical-align:top;margin-right:1.0em;">
+                        <h3 style="margin-left:1em;">
+                            <%=jsonObj[i].ROSTER_NAME%>&nbsp;&nbsp;&nbsp;
+                                <span style="float:right;margin-right:1em;">
+                                    <button onclick="locater.exportToCSV('<%=i %>')" title="export to CSV">export to CSV</button>&nbsp;&nbsp;&nbsp;
+                                    <button id="btn-remove-roster" title="remove roster" onclick="locater.deleteRoster('<%=jsonObj[i].ROSTER_ID%>','<%=jsonObj[i].ROSTER_NAME%>')">remove roster</button>
+                                </span>
+                        </h3>
+                        <table style="margin:1em;" name="studentRosterTable" id="studenttable<%=jsonObj[i].ROSTER_ID%>">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input id="rostertablecheck_<%=jsonObj[i].ROSTER_ID%>" onchange="if(this.checked) locater.checkOnRoster('<%=jsonObj[i].ROSTER_ID%>'); else locater.uncheckRoster('<%=jsonObj[i].ROSTER_ID%>');"
+                                            type="checkbox" name="rosternames">
+                                    </th>
+                                    <th style="text-align:left;">Real Name
+                                        <span style="float:right;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" style="font-weight:bold;text-decoration:none;" title="sortByName" onclick="locater.sortNames('<%=jsonObj[i].ROSTER_ID%>');">A→Z</a>
+                                        </span>
+                                    </th>
+                                    <th style="text-align:left;">Username
+                                        <span style="float:right;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" style="font-weight:bold;text-decoration:none;" title="sortbypseudonym" onclick="locater.sortUsers('<%=jsonObj[i].ROSTER_ID%>');">A→Z</a>
+                                        </span>
+                                    </th>
+                                    <th>Report</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var j=0;j<Object.keys(jsonObj[i].STUDENT_NAMES).length;j++){ %>
+                                    <%  tempstudentID=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID; %>
+                                        <% var underscored = jsonObj[i].STUDENT_NAMES[j].STUDENT_NAME.split(" ").join("_") ;%>
+                                            <% var realname = ''; if(sensitivedata != null) realname = locater.getsensitive('realname', jsonObj[i].STUDENT_NAMES[j].STUDENT_NAME, sensitivedata);%>
+                                                <tr id="studentID_<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>">
+                                                    <td>
+                                                        <input id="studentcheck_<%=jsonObj[i].ROSTER_ID%>_<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>" onchange="if(this.checked) locater.checkstudent('<%=jsonObj[i].ROSTER_ID%>','<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>','<%=stdlength%>'); else locater.uncheckstudent('<%=jsonObj[i].ROSTER_ID%>','<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>');"
+                                                            type="checkbox" name="studentnames_<%=jsonObj[i].ROSTER_ID%>">
+                                                    </td>
+                                                    <td>
+                                                        <input id="realname<%=jsonObj[i].ROSTER_ID%>_<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>" class="realname_<%=underscored%>"
+                                                            onkeydown="if(event.keyCode === 13) movedown(this);$('#warningMsg').show();" oninput="this.style.backgroundColor = aeskey ? '#FFC' : '#FDD'"
+                                                            value="<%=realname%>" type="text" onchange='locater.setsensitive( "realname", "<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_NAME%>", this, true); '
+                                                        />
+                                                    </td>
+                                                    <td id="table_row<%=jsonObj[i].ROSTER_ID%>_<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>" style="text-transform:capitalize;white-space:no-wrap; ">
+                                                        <i style="font-style:normal;">
+                                                            <%=jsonObj[i].STUDENT_NAMES[j].STUDENT_NAME%>
+                                                        </i>
+                                                        <span style="float:right;font-weight:bold; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <a onclick="locater.renameStudent('<%=jsonObj[i].ROSTER_ID%>','<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>','<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_NAME%>')"
+                                                                style="text-decoration:none;cursor: pointer;" title="rename student">↺</a>&nbsp;&nbsp;&nbsp;
+                                                            <a style="text-decoration:none;cursor: pointer;" title="remove student" onclick="locater.deleteStudentFromRoster('<%=jsonObj[i].ROSTER_ID%>','<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>','<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_NAME%>')"
+                                                                onblur="locater.encrypt('testString')">×</a>
+                                                        </span>
+                                                    </td>
+                                                    <td id="report_student_<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>" style="text-align:center;">
+                                                        <%if(jsonObj[i].STUDENT_NAMES[j].VIEW_REPORT>0){%>
+                                                            <a href="#" onclick="locater.getStudentReport('<%=jsonObj[i].STUDENT_NAMES[j].STUDENT_ID%>');">View</a>
+                                                            <%};%>
+                                                    </td>
+                                                </tr>
+                                                <% };%>
+                                                    <tr>
+                                                        <td style="text-align:center;">
+                                                            <a id="addNewStd" style="font-weight:bold;text-decoration:none;cursor:pointer;" onclick="locater.addNewStudent('<%=jsonObj[i].ROSTER_ID%>','<%=stdlength%>');">+</a>
+                                                        </td>
+                                                        <td>
+                                                            <a id="addNewStd" style="font-weight:bold;text-decoration:none;cursor:pointer" onclick="locater.addNewStudent('<%=jsonObj[i].ROSTER_ID%>','<%=stdlength%>');">Add New Student</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:center;">
+                                                            <a id="addExistingStd" style="font-weight:bold;text-decoration:none;cursor:pointer;" onclick="locater.addExistingStudent('<%=jsonObj[i].ROSTER_ID%>','studenttable<%=jsonObj[i].ROSTER_ID%>','<%=stdlength%>')">+</a>
+                                                        </td>
+                                                        <td>
+                                                            <a id="addExistingStd" style="font-weight:bold;text-decoration:none;cursor:pointer;" onclick="locater.addExistingStudent('<%=jsonObj[i].ROSTER_ID%>','studenttable<%=jsonObj[i].ROSTER_ID%>','<%=stdlength%>')">Add Existing Student</a>
+                                                        </td>
+                                                    </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <%};%>
+        </div>
+</div>

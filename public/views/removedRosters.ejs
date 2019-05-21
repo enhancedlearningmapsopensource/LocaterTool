@@ -1,0 +1,75 @@
+<div id="removedInnerDiv" style="margin:1em;margin-top:2em;">
+    <br>
+    <hr>
+    <h3>Removed Rosters
+        <span class="pseudolink" title="refresh removed rosters and students data" onclick="fetchremoved();" style="margin-left:1em;display:none;">↺</span>
+    </h3>
+    <table id="removedRosterTable" style="margin:1em; ">
+        <tbody>
+            <tr>
+                <th>Roster Name</th>
+                <th>Students</th>
+                <th>Restore</th>
+            </tr>
+            <% var jsonObj=removedRosters;
+            if(jsonObj.InactiveRosters!=null){
+		    for (var i = 0; i < Object.keys(jsonObj.InactiveRosters).length; i++) { %>
+                <tr id="rm-roster-<%=jsonObj.InactiveRosters[i].ROSTER_NAME%>">
+                    <td>
+                        <%=jsonObj.InactiveRosters[i].ROSTER_NAME%>
+                    </td>
+                    <td>
+                        <select>
+                            <option>
+                                <%=Object.keys(jsonObj.InactiveRosters[i].STUDENT_NAMES).length + ' Students'%>
+                            </option>
+                            <% for(var j=0;j<Object.keys(jsonObj.InactiveRosters[i].STUDENT_NAMES).length;j++){ %>
+
+                                <option>
+                                    <%=jsonObj.InactiveRosters[i].STUDENT_NAMES[j].STUDENT_NAME%>
+                                </option>
+                                <%};%>
+                        </select>
+                    </td>
+                    <td style="text-align:center; ">
+                        <span class="pseudolink " title="restore roster " onclick="locater.activateRoster('<%=jsonObj.InactiveRosters[i].ROSTER_NAME%>'); ">+</span>
+                    </td>
+                </tr>
+                <%};%>
+                    <%};%>
+        </tbody>
+    </table>
+    <h3>Removed Students
+        <span class="pseudolink " title="refresh removed rosters and students data " onclick="fetchremoved(); " style="margin-left:1em;display:none; ">↺</span>
+    </h3>
+    <table id="removedStudentFromRoster" style="margin:1em; ">
+        <tbody>
+            <tr>
+                <th>Real Name</th>
+                <th>Username</th>
+                <th>Roster</th>
+                <th>Restore</th>
+            </tr>
+            <% var jsonObj=removedRosters;
+            if(jsonObj.InactiveStudents!=null){
+            for (var i = 0; i < Object.keys(jsonObj.InactiveStudents).length; i++) { 
+                 for(var j=0;j<Object.keys(jsonObj.InactiveStudents[i].STUDENT_NAMES).length;j++){ %>
+                <tr id="rm-student-<%=jsonObj.InactiveStudents[i].STUDENT_NAMES[j].STUDENT_ID%>">
+                    <td>
+                    </td>
+                    <td style="text-transform:capitalize; ">
+                        <%=jsonObj.InactiveStudents[i].STUDENT_NAMES[j].STUDENT_NAME%>
+                    </td>
+                    <td>
+                        <%=jsonObj.InactiveStudents[i].ROSTER_NAME%>
+                    </td>
+                    <td style="text-align:center; ">
+                        <span class="pseudolink " title="restore student " onclick="locater.activateStudent('<%=jsonObj.InactiveStudents[i].STUDENT_NAMES[j].STUDENT_NAME%>','<%=jsonObj.InactiveStudents[i].STUDENT_NAMES[j].STUDENT_ID%>','<%=jsonObj.InactiveStudents[i].ROSTER_ID%>','<%=jsonObj.InactiveStudents[i].ROSTER_NAME%>','<%=jsonObj.InactiveStudents[i].ACTIVEFLAG%>')">+</span>
+                    </td>
+                </tr>
+                <%};%>
+                    <%};%>
+                        <%};%>
+        </tbody>
+    </table>
+</div>

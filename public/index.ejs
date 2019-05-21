@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Roster</title>
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <link rel="stylesheet" href="/assets/css/pikaday.css">
+</head>
+
+<body class="locaterbody">
+    <div class="downloadWarning" id="warningMsg">
+        <h3><b><i><em>It looks like you are making roster changes.</em></i></b></h3>
+        <p>To ensure those changes and a complete list of all student real names are available the next time you use the Student Locater Tool, 
+            please click the <b>“EXPORT ALL”</b> button and save the file.<br><br>
+            If you are still making roster changes, wait until you are finished to export and save your file.
+        </p>
+</div>
+  <div id='printDiv'></div>
+  <div id='locaterTool'></div>
+  <div id='studentreport' style="display:none"></div>
+  <div id='testreport' style="display:none"></div>
+  <div id='report' style="display:none"></div>
+  <div id='itemreport' style="display:none"></div>
+  <div id='createRoster'></div>
+  <div id='viewRosters'></div>
+  <div id='restoreRosters'></div>
+  <div id="removedRostersNStudents"></div>
+
+  <!-- <script src="/assets/js/bundles/roster-bundle-min.js?t=1528210880511"></script> -->
+  <script src="/assets/js/external/jquery.min.js"></script>
+  <script src="/assets/js/external/jquery-ui.min.js"></script>
+  <script src="/assets/js/external/can.jquery-all.js"></script>
+  <script src="/assets/js/external/pikaday.js"></script>
+  <script src="/assets/js/external/interact.js"></script>
+  <script src="/assets/js/util/locater.js"></script>
+  <script src="/assets/js/external/tabletocsv.js"></script>
+  <script src="/assets/js/controller/rosterController.js"></script>
+  <script src="/assets/js/model/rosterModel.js"></script>
+  <script src="/assets/js/util/testUtil.js"></script>
+
+  <script type="text/javascript">
+    var rosterControl = new rosterController('body', {});
+  </script>
+</body>
+
+</html>

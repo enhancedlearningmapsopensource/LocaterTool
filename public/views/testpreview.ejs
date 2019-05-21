@@ -1,0 +1,30 @@
+<div class='testresultviewerclass' id='testresultviewer' style="display:block;" onmouseup="document.documentElement.style.cursor='';"
+    onmousedown="">
+    <div class='windowh3' style="padding-top:1em;padding-bottom:1em;">
+        <select id='testResultStudentSelect' style='font-size:1.25em;width: 230px;text-overflow: ellipsis;' onchange="locater.loadStudentTestResults()">
+            <%if(completedStudJSON.length >0){%>
+                <option id='completed ' disabled>
+                    <label>Completed:</label>
+                </option>
+
+                <% for(var i=0;i<completedStudJSON.length;i++){%>
+                    <%
+                        var selected = (completedStudJSON[i].STUDENT_ID == studentId)? "selected":""; %>
+                        <option value='<%=JSON.stringify(completedStudJSON[i])%>' id='student<%=completedStudJSON[i].STUDENT_ID%>' <%=selected %>
+                            >&nbsp;&nbsp;
+                            <%= locater.getStudentName(completedStudJSON[i].USERNAME)%>
+                        </option>
+                        <%};};%>
+        </select>
+        <span style="font-size:1.5em;font-weight:bold;">Test Results View</h3>
+    </div>
+
+    <span style='position:absolute;top:0.75em;right:0.75em;white-space:nowrap;'>
+        <div class="pseudolink" style='vertical-align:middle;display:inline-block;margin-right:1em;' onclick='window.open(document.getElementById("testresultviewiframe").getAttribute("src"), "_blank");'>Open in new tab &#8599;</div>
+        <button onclick="locater.printDiv('testresultviewiframe','printDiv','Test')">print</button>
+        <button onclick='document.getElementById("report").style.display="none"; document.getElementById("putresulthere").innerHTML=""; document.getElementById("testresultviewer").style.display="none";document.getElementById("testresultviewer").innerHTML="";document.getElementById("report").innerHTML ="" '
+            style='font-weight:bold;vertical-align:middle;'>x</button>
+    </span>
+    <iframe id='iframeprintmessage'></iframe>
+    <div id='putresulthere' style='position: absolute; top: 53px; height: calc(100% - 63px); width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: hidden; -webkit-overflow-scrolling: touch;'></div>
+</div>

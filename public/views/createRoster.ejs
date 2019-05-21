@@ -1,0 +1,53 @@
+<!-- <div id='passphrasediv' style='margin:1em;'>
+    <h2 style='margin-top:2em;'>Returning Users: Passphrase for Real Names</h2>
+    <div style='margin:1em;'>
+        <form id="passphraseform" autocomplete="dont">
+            <input type='password' placeholder='passphrase' autocomplete="password" onkeydown='if(event.keyCode === 13) { if(aeskey || resetpassphrasewarning) document.getElementById("changepassphrase").click(); else document.getElementById("submitpassphrase").click(); }'
+                id='passphraseinput' value=''>
+            <br/>
+            <br/>
+            <input type='text' placeholder='hint' style='width:300px' onkeydown='if(event.keyCode === 13) { document.getElementById("submitpassphrase").click();}'
+                id='hintinput'>
+        </form>
+        <p id='nohint' style='display:none;color:red'>No hint provided</p>
+        <br/>
+        <button id='submitpassphrase' onclick='sensitivepassphrase = document.getElementById("passphraseinput").value; locater.hashpassphrase(sensitivepassphrase, locater.ajaxgetsensitive, false, true);'>submit</button>
+        <button id='resetpassphrase' onclick='if(!confirm("The encrypted real names stored on the ELM server will be reset to the values displayed below. Continue?")) return 0; aeskey = null; var sensitivepassphrase = document.getElementById("passphraseinput").value; locater.hashpassphrase(sensitivepassphrase, function() { isresettingpassphrase=true; locater.ajaxsetsensitive(null, function() { document.getElementById("passphraseinput").value=""; alert("Your passphrase has been changed."); resetpassphrasewarning=isresettingpassphrase=false; }); });'
+            style='display:none;'>reset passphrase</button>
+        <button id='showhint' style='margin-left:35px'>show hint</button>
+        <button id='changepassphrase' onclick='if(!confirm("Are you sure you want to change your passphrase?")) return 0; aeskey = null; var sensitivepassphrase = document.getElementById("passphraseinput").value; locater.hashpassphrase(sensitivepassphrase, function() { isresettingpassphrase=true; locater.ajaxsetsensitive(null, function() { document.getElementById("passphraseinput").value=""; alert("Your passphrase has been changed."); resetpassphrasewarning=isresettingpassphrase=false; }); });'
+            style='display:none;'>change passphrase</button>
+        <div id='encryptingmessage' style='display:none;color:blue;'>
+            <br> All student-identifiable information is securely encrypted on the ELM server with your username and passphrase.
+        </div>
+        <div id='badpassphrase' style='display:none;color:red;'>
+            <br> The passphrase does not match the encrypted data on the ELM server. If you have recently reset your login passphrase,
+            try the old one.
+        </div>
+        <div id='notencryptedwarning' style='display:none;color:blue;'>
+            <br> Enter a passphrase to encrypt real names on the ELM server.
+            <br> If no passphrase is entered, real names will not be encrypted and will be lost.
+        </div>
+        <div id='resetpassphrasewarning' style='display:none;color:red;'>
+            <br> Your login passphrase has recently been reset. Please enter your new passphrase above and click the 'change
+            passphrase' button.
+        </div>
+    </div>
+    <br>
+    <hr>
+</div>
+ -->
+ 
+<input type='email' placeholder='email' id='emailinput' autocomplete="email" disabled=true style="display: none;">
+<div id='createrosterdiv' style='margin:3em 1em 1em 1em;'>
+    <h2>Create New Roster</h2>
+    <div style='margin: 1em;'>
+        <input type='text' id='newrostername' value='' placeholder='roster name' onblur="this.value=this.value.replace(/[^A-Za-z0-9~!@$%^*()',. -]/g, '');"
+            onkeydown='if(event.keyCode === 13) { this.blur(); locater.createNewRoster(); }'>
+        <input type='text' size='10' maxlength='2' id='newrosterlength' value='' placeholder='roster length' onblur='this.value=this.value.replace(/[^0-9]/g, "").slice(0,2);'
+            onkeydown='if(event.keyCode === 13) { this.blur(); locater.createNewRoster(); }'>
+        <button id="crt-roster-btn" onclick="locater.createNewRoster();">create</button>
+    </div>
+    <br>
+    <hr>
+</div>

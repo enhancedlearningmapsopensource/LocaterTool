@@ -1,0 +1,272 @@
+@charset "UTF-8";
+.locaterbody{
+    font-family: Trebuchet, Helvetica, Arial, sans-serif;
+}
+
+.locaterbody table {
+    border-collapse: collapse;
+    font-family: sans-serif;
+}
+
+.locaterbody h3 {
+    margin: 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.locaterbody th,
+.locaterbody td {
+    border: 1px solid black;
+    padding: 5px;
+    vertical-align: middle;
+}
+
+.locaterbody tr {
+    background-color: #FFFFFF;
+}
+
+.locaterbody th {
+    background-color: #F0F0F0;
+}
+
+.locaterbody label {
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.locaterbody .dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.50);
+    z-index: 999999;
+}
+.locaterbody .testpreviewerclass {
+    position: fixed;
+    top: 80px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background-color: #F0F0F0;
+    border: 3px solid #777777;
+    border-radius: 0.75em;
+    text-align: center;
+    z-index: 1;
+}
+.locaterbody .dialog-overlay .dialog {
+    width: 250px;
+    margin: 100px auto 0;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+    border-radius: 3px;
+}
+.locaterbody .dialog-overlay .dialog  {
+    border-bottom: 1px solid #e5e5e5;
+    overflow:hidden;
+    /* padding: 10px 8px; */
+    background-color: #f6f7f9;
+}
+.locaterbody .dialog-overlay .dialog  h3 {
+    font-size: 14px;
+    margin: 0;
+    color: #555;
+    display: inline-block
+}
+
+.locaterbody .dialog-overlay .dialog  .fa-close {
+    float: right;
+    color: #c4c5c7;
+    cursor: pointer;
+    transition: all .5s ease;
+    padding: 0 2px;
+    border-radius: 1px    
+}
+.locaterbody .dialog-overlay .dialog .fa-close:hover {
+    color: #b9b9b9
+}
+.locaterbody .dialog-overlay .dialog .fa-close:active {
+    box-shadow: 0 0 5px #673AB7;
+    color: #a2a2a2
+}
+.locaterbody .dialog-overlay .dialog .dialog-msg {
+    padding: 12px 10px
+}
+.locaterbody .dialog-overlay .dialog .dialog-msg p{
+    margin: 0;
+    font-size: 13px;
+    color: #333;
+    text-align: justify;
+}
+.locaterbody .dialog-overlay .dialog footer{
+    background-color: rgb(241, 241, 241);
+    padding: 8px 10px;
+}
+.locaterbody .dialog-overlay .dialog footer .controls {
+    direction: rtl;
+    text-align: center;
+}
+
+.locaterbody .dialog-overlay .dialog footer .controls .active{
+    border-width:2px;
+    border-style: solid;
+   border-color: rgb(56, 135, 201);
+}
+
+.locaterbody .dialog-overlay .dialog footer .controls button{
+   width:70px;
+   height: 22px;
+   position:relative;
+}
+
+
+.locaterbody .padding7{
+    padding: 7px;
+}
+
+#studentreportviewer {
+    position: fixed;
+    top: 80px;
+/* 				bottom: 50px; */
+    left: 60px;
+/* 				right: 50px; */
+    width: calc(100% - 120px);
+    height: calc(100% - 120px);
+    background-color: #F0F0F0;
+    border: 3px solid #777777;
+    border-radius: 5px;
+    text-align: center;
+    resize: both;
+    overflow: hidden;
+    z-index: 1;
+}
+#testviewer {
+    position: fixed;
+    top: 80px;
+/* 				bottom: 20px; */
+    left: 40px;
+/* 				right: 20px; */
+    width: calc(100% - 80px);
+    height: calc(100% - 80px);
+    background-color: #F0F0F0;
+    border: 3px solid #777777;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+    resize: both;
+    z-index: 1;
+}
+#testresultviewer {
+    position: fixed;
+    top: 80px;
+/* 				bottom: calc(50% - 240px); */
+    left: 80px;
+/* 				right: calc(50% - 425px); */
+    width: calc(100% - 150px);
+    height: calc(100% - 150px);
+    background-color: #F0F0F0;
+    border: 3px solid #777777;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+    resize: both;
+    z-index: 2;
+}
+#itemviewer {
+    position: fixed;
+    top: calc(50% - 240px);
+/* 				bottom: calc(50% - 240px); */
+    left: calc(50% - 425px);
+/* 				right: calc(50% - 425px); */
+    width: 850px;
+    height: 480px;
+    background-color: #F0F0F0;
+    border: 3px solid #777777;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+    resize: both;
+    z-index: 2;
+}
+#refreshdiv {
+    text-decoration: underline
+}
+.locaterbody .pseudolink {
+    cursor: pointer;
+    color: #0000EE;
+    white-space: nowrap;
+}
+
+.locaterbody .windowh3 {
+    cursor: move;
+    margin: 0;
+	padding-top:1em;
+    padding-bottom: 1em;
+    box-sizing: border-box;
+}
+
+
+.locaterbody p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.locaterbody a {
+    color: #0000EE;
+}
+
+@media print {
+    table {
+        page-break-inside: avoid;
+    }
+    #restoreRosters,#createRoster,#itemreport,
+    #viewRosters,#removedRostersNStudents,
+    #studentreport,#report,#testreport,
+    #locaterTool{
+        visibility: hidden;
+        display: none;
+    }
+    /* body * {
+        visibility: hidden;
+    }  */
+    #printDiv,
+    #printDiv * {
+        visibility: visible;
+    }
+    #printDiv {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .MJX_Assistive_MathML{
+        visibility: hidden !important;
+        display: none;
+    }
+}
+.locaterbody .loginButton {
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+}
+@media screen {
+    #printDiv,
+     {
+        visibility: hidden;
+        display: none;
+    }
+   
+}
+
+div.downloadWarning {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #c7c5c5;
+    padding: 0px 10px 20px 10px;
+    max-width: 1025px;
+    border: 4px double black;
+    border-radius: 25px;
+    text-align: center;
+    display: none;
+}

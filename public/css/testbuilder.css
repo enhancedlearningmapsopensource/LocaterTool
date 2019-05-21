@@ -1,0 +1,199 @@
+@charset "UTF-8";
+body {
+    font-family: Trebuchet, Helvetica, Arial, sans-serif;
+    overflow: auto;
+}
+table {
+    margin: 1em;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+    vertical-align: middle;
+}
+
+th {
+    background: #F0F0F0;
+}
+label {
+    cursor: pointer;
+}
+
+#htmleditordiv, #formulaeditordiv {
+    position: fixed;
+    top: 50px;
+    bottom: 50px;
+    left: 50px;
+    right: 50px;
+    background-color: #F8F8F8;
+    border: 3px solid #777777;
+    border-radius: 0.75em;
+    text-align: center;
+}
+
+#formulaeditordiv {
+    position: fixed;
+    top: 25px;
+    bottom: 25px;
+    left: 20%;
+    right: 20%;
+    top: 20%;
+    bottom: 20%;
+    background-color: #F8F8F8;
+    border: 3px solid #777777;
+    border-radius: 0.75em;
+    text-align: center;
+}
+input[type="radio"], input[type="checkbox"] {
+/* 				cursor:pointer; */
+    vertical-align: middle;
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 1em;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+/*Container, container body, iframe*/
+/*			.mce-tinymce, .mce-container-body, #code_ifr {
+    min-height: calc(100% - 3px) !important;
+}*/
+/* HACK FIXME TODO
+   The rule above ends up causing the min-height of float panels to be calc(...).
+   For example, when editing a table, the table float panel insert will cover
+   the entire table.
+   Unfortunately, the ID mceu_24 is not guaranteed to be the right ID, and
+   any changes to the init settings or tinyMCE upgrades could break this fix. */
+#mceu_24 {
+    min-height: calc(100% - 3px) !important;
+}
+
+/*Container body*/
+.mce-container-body {
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/*Editing area*/
+.mce-container-body .mce-edit-area {
+    position: absolute;
+    top: 105px;
+    bottom: 37px;
+    left: 0;
+    right: 0;
+}
+
+/*Footer*/
+.mce-tinymce .mce-statusbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#tinymceta_ifr {
+    height: 100%;
+}
+.pseudolink {
+    cursor: pointer;
+    color: #0000EE;
+    white-space: nowrap;
+    font-weight:bold;
+}
+
+.overlay-content {
+	position: fixed !important;
+	background: #fff;
+	-moz-box-shadow: 0px 0px 1px 1px rgba(0,0,0,.2);
+	-moz-border-radius: 4px;
+	box-shadow: 0px 0px 1px 1px rgba(0,0,0,.2);
+	border-radius: 4px;
+	margin: 20px auto;
+	overflow: hidden;
+	display: none;
+	top: 60px;
+	left: 50%;
+	padding: 15px;
+	width: 60%;
+	margin-left: -30%;
+	z-index: 9999;
+    overflow: hidden;
+    text-align:center;
+}
+
+.popupOverlay {
+    position: absolute;
+    -webkit-box-shadow:0px 0px 5px black;
+    -moz-box-shadow:0px 0px 5px black;
+    -o-box-shadow:0px 0px 5px black;
+    box-shadow:0px 0px 5px black;
+    box-shadow:0px 0px 5px black;
+    z-index: 999999999;
+    color:black;
+    background-color:rgba(248,248,255, 0.7);
+    padding:4px;
+    left:0; top:0; right:0; bottom:0; display:none;
+}
+.testviewerclass {
+    position: fixed;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background-color: #F0F0F0;
+    border: 3px solid #777777;
+    border-radius: 0.75em;
+    text-align: center;
+}
+a {
+    color: #0000EE;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+ .active{
+    border-width:2px;
+    border-style: solid;
+   border-color: rgb(56, 135, 201);
+}

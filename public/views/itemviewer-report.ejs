@@ -1,0 +1,98 @@
+<div class="itemviewerclass" id="itemviewer-report" style="z-index: 3;display:block;" onmouseup="document.documentElement.style.cursor='';"
+    onmousedown="">
+    <% var questionObj=JSON.parse(JSON.stringify(quesObj)); %>
+        <h3 class="windowh3">Item Report Viewer</h3>
+        <span style="position:absolute;top:0.75em;right:0.75em; ">
+            <button onclick="document.getElementById('putitemhere-report').innerHTML=''; document.getElementById('view-report').innerHTML=''; document.getElementById('view-report').style.display='none';"
+                style="font-weight:bold; ">x</button>
+        </span>
+        <%#Empty div for Printing %>
+            <div id='printItmdiv'></div>
+            <div id="putitemhere-report" style="text-align: left; position: absolute; top: 53px; height:calc(100% - 63px); width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: auto; -webkit-overflow-scrolling:
+    touch; ">
+                <div style="padding: 1em; ">
+                    <div style="margin:1em; ">
+                        <b style="vertical-align:top; ">
+                            <%=questionObj.QUESTION_ORDER +questionObj.PART_ORDER + ". "%>
+                        </b>&nbsp;&nbsp;&nbsp;
+                        <div id="unEscapeQuest<%=questionObj.QUESTION_ID%>" style="display:inline-block;max-width:calc(100% - 3em);">
+                            <%= questionObj.QUESTION %>
+                        </div>
+                    </div>
+                    <table style="margin:1em; " id="itemtable ">
+                        <tbody>
+                            <tr>
+                                <th>Option</th>
+                                <th>Node(s)</th>
+                                <th>% answered</th>
+                            </tr>
+                            <% var optLen=Object.keys(questionObj.optionDetails).length; %>
+                                <%for(var i=0;i<Object.keys(questionObj.optionDetails).length;i++){
+                            var node = questionObj.optionDetails[i].NODES;
+                            var percent=questionObj.optionDetails[i].PERCENT;
+                                        if(percent == '0.0%'){
+                                            percent='0%';
+                                        }else if(percent == '100.0%'){
+                                            percent='100%';
+                                        }
+                            %>
+                                    <tr>
+                                        <td>
+                                            <div style="white-space:nowrap; ">
+                                                <b style="vertical-align:top; ">
+                                                    <%=questionObj.optionDetails[i].OPTION_ORDER+". "%>
+                                                </b>
+                                                <%if(questionObj.optionDetails[i].ISVALID==true){%>
+                                                    <div style="display:inline-block;white-space:normal;max-width:calc(100% - 1.5em); ">
+                                                        <div id="unEscapeOption<%=questionObj.optionDetails[i].OPTION_ID%>"><%=questionObj.optionDetails[i].OPTION_TITLE%></div>
+                                                            <span style="color:#080;font-weight:bold; ">&#10004;</span>
+                                                    </div>
+                                                    <%}else{%>
+                                                        <div id="unEscapeOption<%=questionObj.optionDetails[i].OPTION_ID%>" style="display:inline-block;white-space:normal;max-width:calc(100% - 1.5em); ">
+                                                            <%=questionObj.optionDetails[i].OPTION_TITLE%>
+                                                        </div>
+                                                        <%};%>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <%=node%>
+                                        </td>
+                                        <td>
+                                            <%if(questionObj.optionDetails[i].ISVALID==true){%>
+                                                <span style="color:#080;font-weight:bold; ">
+                                                    <%=percent%>
+                                                </span>
+                                                <%}else{%>
+                                                    <span>
+                                                        <%=percent%>
+                                                    </span>
+                                                    <%};%>
+                                        </td>
+                                    </tr>
+                                    <% if(i==(optLen-1) && questionObj.QUESTION_TYPE=='cr'){
+                                        var otherpercent=questionObj.OTHER_PERCENT;
+                                        if(otherpercent=='0.0%'){
+                                            otherpercent='0%';
+                                        }else if(otherpercent=='100.0%'){
+                                            otherpercent='100%';
+                                        }
+                                        %>
+                                        <tr>
+                                            <td>Other
+                                            </td>
+                                            <td>
+                                                <%="  "%>
+                                            </td>
+                                            <td>
+                                                <%=questionObj.OTHER_PERCENT%>
+                                            </td>
+                                        </tr>
+
+                                        <% };%>
+                                            <%};%>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+</div>

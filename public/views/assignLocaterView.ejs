@@ -1,0 +1,140 @@
+<div id="assignRosterToTestInner">
+    <form id="assignTestForm" autocomplete="never">
+        <table style='margin:1em;'>
+            <tr id='assigntesttable1 '>
+                <th colspan='8 '>Assign Locater Tool</th>
+            </tr>
+            <tr id='assigntesttable2'>
+                <td colspan="3" valign="top" style='padding-top:1em;padding-left:1em;padding-right:0.5em;padding-bottom:1em;border-right:none;vertical-align:top; '>
+                    <table style='border:none;width:100%;vertical-align:top; '>
+                        <tr style='border:none; '>
+                            <td colspan='2' style='text-align:right;border:none;width:100%;'>
+                                <select id='testselect' style='font-size:1.1em;width:100%;' onchange='locater.showFormAandBLinks(this.value);'>
+                                    <option value='-1' selected>Select Locater Tool</option>
+                                    <% var jsonTestObj=JSON.parse(JSON.stringify(savedTests));
+                                if(jsonTestObj!=null){
+                                for (var i=0;i<Object.keys(jsonTestObj).length;i++){ %>
+                                        <option value='<%=jsonTestObj[i].ID%>'>
+                                            <%=jsonTestObj[i].TEST_TITLE%>
+                                        </option>
+                                        <%};%>
+                                </select>
+                                <br>
+                                <div id='previewlink' style='margin-right:1em;margin-top:0.5em;display:none;'>
+                                    <%#For the below two elements, ids are being added through locater.showFormAandBLinks() method%>
+                                        <a class='pseudolink' onclick='locater.displaytestA(this.id);'>Form A</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a class='pseudolink' onclick='locater.displaytestB(this.id);'>Form B</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style='border:none;'>
+                            <td style='border:none;font-weight:bold;white-space:nowrap;'>Due Date</td>
+                            <td style='border:none;width:100%;'>
+                                <div style='display:flex;'>
+                                    <div style='width:100%;'>
+                                        <input type='text' id='datepicker' placeholder='optional' style='min-width:4em;width:100%;' onclick="event.preventDefault(); locater.addpikaday('datepicker'); ">
+                                    </div>
+                                    <div style='margin-left:0.5em;'>
+                                        <select id='timeselect'>
+                                            <option value='-1' selected>due time</option>
+                                            <option value='00:00:00'>12:00 AM</option>
+                                            <option value='01:00:00'>1:00 AM</option>
+                                            <option value='02:00:00'>2:00 AM</option>
+                                            <option value='03:00:00'>3:00 AM</option>
+                                            <option value='04:00:00'>4:00 AM</option>
+                                            <option value='05:00:00'>5:00 AM</option>
+                                            <option value='06:00:00'>6:00 AM</option>
+                                            <option value='07:00:00'>7:00 AM</option>
+                                            <option value='08:00:00'>8:00 AM</option>
+                                            <option value='09:00:00'>9:00 AM</option>
+                                            <option value='10:00:00'>10:00 AM</option>
+                                            <option value='11:00:00'>11:00 AM</option>
+                                            <option value='12:00:00'>12:00 PM</option>
+                                            <option value='13:00:00'>1:00 PM</option>
+                                            <option value='14:00:00'>2:00 PM</option>
+                                            <option value='15:00:00'>3:00 PM</option>
+                                            <option value='16:00:00'>4:00 PM</option>
+                                            <option value='17:00:00'>5:00 PM</option>
+                                            <option value='18:00:00'>6:00 PM</option>
+                                            <option value='19:00:00'>7:00 PM</option>
+                                            <option value='20:00:00'>8:00 PM</option>
+                                            <option value='21:00:00'>9:00 PM</option>
+                                            <option value='22:00:00'>10:00 PM</option>
+                                            <option value='23:00:00'>11:00 PM</option>
+                                        </select>
+                                    </div>
+                                    <div style='margin-left:0.5em;'>
+                                        <button onclick='document.getElementById("timeselect").value = -1; document.getElementById("datepicker").value = " ";'>clear</button>
+                                    </div>
+                            </td>
+                        </tr>
+                        <tr style='border:none;'>
+                            <td style='border:none;white-space:nowrap;font-weight:bold;'>Password</td>
+                            <td style='border:none;width:100%;'>
+                                <input type='text' id='locatertestpassword' placeholder='case insensitive' autocomplete='email' style='width:100%;' value=''>
+                            </td>
+                        </tr>
+                        <tr style='border:none;'>
+                            <td style='border:none;font-weight:bold;vertical-align:top;white-space:nowrap;'>Note to Self</td>
+                            <td style='border:none;width:100%;'>
+                                <textarea id='testcomment' maxlength="280" rows='3' placeholder='comment' style='width:100%;'></textarea>
+                            </td>
+                        </tr>
+                        <tr style='border:none;'>
+                            <td style='border:none;font-weight:bold;vertical-align:top;white-space:nowrap;'>Note to ELM</td>
+                            <td style='border:none;width:100%;'>
+                                <textarea id='testmessage' rows='5' placeholder='How did it go? Were there any technical problems? Should any data be excluded from our statistical analysis? Please use usernames, not real names.'
+                                    style='width:100%;' maxlength="280"></textarea>
+                            </td>
+                        </tr>
+                        <tr style='border:none;text-align:right;'>
+                            <td colspan='2' style='border:none;padding-top:1em;'>
+                                <button id='clearAssignTestForm'>clear</button>
+                                <button id='assignTest'>submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan='5' valign="top " style='border-left:none;vertical-align:top;padding-top:1em;padding-left:1em;padding-right:1em;'>
+                    <div style='display:inline-block;vertical-align:top;'>
+                        <div id='rosterchecklist' style='display:inline-block;'>
+                            <h3 style='margin-top:0;'>Assign Students</h3>
+                            <div id='rostercheckboxes' style='margin:0.5em;'>
+                                <div style='margin:0.5em;'>
+                                    <% var jsonRosterObj=JSON.parse(JSON.stringify(rosters));
+                                    for (var i=0;i<Object.keys(jsonRosterObj).length;i++){%>
+                                        <label id="rostername_<%=jsonRosterObj[i].ROSTER_ID%>" style='font-weight:bold;'>
+                                            <input id='rostercheckbox_<%=jsonRosterObj[i].ROSTER_ID%>' name='rosternames' type='checkbox' onchange="if(this.checked) locater.checkOnRoster('<%=jsonRosterObj[i].ROSTER_ID%>'); else locater.uncheckRoster('<%=jsonRosterObj[i].ROSTER_ID%>');">
+                                            <%=jsonRosterObj[i].ROSTER_NAME%>
+                                                <br>
+                                        </label>
+                                        <%};};%>
+
+                                </div>
+                            </div>
+                            <div style=' max-width:20em;margin:0.25em; '>To make individual student assignment adjustments, use the student checkboxes in the roster(s)
+                                below.
+                            </div>
+                            <div style='display:none;'>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <hr>
+    <div class='testpreviewerclass' id='testpreviewer' style='display:none;'>
+        <h3 class='windowh3'>Test Preview</h3>
+        <span style='position:absolute;top:0.75em;right:0.75em;white-space:nowrap;'>
+            <div class="pseudolink" style='vertical-align:middle;display:inline-block;margin-right:1em;' onclick='window.open(document.getElementById("testpreviewiframe").getAttribute("src"), "_blank");'>Open in new tab &#8599;</div>
+            <button onclick="locater.printDiv('testpreviewiframe','printDiv','Test Preview')">print</button>
+            <button onclick='document.getElementById("putpreviewhere").innerHTML=""; document.getElementById("testpreviewer").style.display="none";'
+                style='font-weight:bold;vertical-align:middle;'>x</button>
+        </span>
+        <iframe id='iframeprintmessage'></iframe>
+        <div id='putpreviewhere' style='position: absolute; top: 53px; height: calc(100% - 63px); width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: hidden; -webkit-overflow-scrolling: touch;'></div>
+    </div>
+    </div>

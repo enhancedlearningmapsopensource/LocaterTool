@@ -1,0 +1,220 @@
+<div>
+    <div style='margin:1em;'>
+        <br>
+        <button id='previewtestbutton' onclick='displaytest("/locatertool/testtaker?test=localstorage");' disabled>preview test</button>
+        <button style='display:none;' id='edittestbutton' onclick='istaking = false; render(istaking, false);'>edit test</button>
+        <button id='cleartestbutton'>new test</button>
+        <button type="submit" id='uploadtestbutton'>save test </button>
+        <button id='fileuploadbutton'>file uploads</button>
+        <button id='undobutton1' onclick='popstate();' disabled>undo change</button>
+        <button id='redobutton1' onclick='redo();' disabled>redo change</button>
+        <br>
+
+        <div id='testtitleform'>
+            <br>
+            <br>
+            <b>Test Title</b>
+            <input onblur='pushstate();' id='title' type='text' oninput='teststate.title = this.value; showjson();' />
+            <br>
+        </div>
+        <span id='testpassageform'>
+            <br>
+            <b>Student Title</b>
+            <input onblur='pushstate();' id='studenttitle' type='text' oninput='teststate.studenttitle = this.value; showjson();'>
+            <br>
+            <br>
+            <b>Test Passage</b>
+            <input onblur='pushstate();' id='passage' type='text' oninput='teststate.passage = this.value; showjson();'>
+            <button onclick="document.getElementById('htmleditordiv').style.display='block'; htmledit(teststate, 'passage'); ">&#9997;</button>
+            <br>
+            <br>
+            <b>Test Subject</b>
+            <select id="subject">
+                <option value="" disabled selected>Subject (e.g. Math)</option>
+            </select>
+
+            <input placeholder="node prefix (e.g. M)" onblur="pushstate();" id="prefix" oninput="teststate.prefix = this.value; showjson();"
+                disabled="" type="text">
+            <br>
+            <br>
+            <b>Test Standards</b>
+            <input placeholder='standards (space separated)' onblur='validateStandards(this.value);' id='standards' type='text'>
+            <br>
+            <br>
+            <b>Test Map Views</b>
+            <input placeholder='map IDs (comma separated)' onblur='pushstate();' id='mapviews' type='text' oninput='teststate.mapviews = this.value; showjson();'>
+            <br>
+            <br>
+            <b>Reporting Nodes</b>
+            <!--1/22/19-Author:Anantha Sravya Deepala
+            Added Subject drop down and Add(+) button to add different subject-node reporting nodes
+            Addded div around it to copy entire html in next line to enable diff subject-node selection-->
+            <input placeholder='reporting nodes (space separated)' onblur="teststate.targetnodes=this.value; showjson();" id='repnodes' type='text' style="display:none;">
+            <div id="reportingnodes">
+                <div id="subjectnodediv0">
+                    <select class="reportnodesubject">
+                        <option value="" disabled selected>Subject (e.g. Math)</option>
+                    </select>
+                    <input placeholder='reporting nodes (comma separated)' onblur='var th=this; validateTestNodes(this,this.value,function(result){if(result){setReportNodes();}});' id='targetnodes' type='text' >
+                    <button onclick="createsubjectnodediv()" id="addsubjectnode" title="add different subject-node" style='font-weight:bold;vertical-align:middle;'>+</button>
+                    <button onclick="var th=this;deletereportnodediv(th)" id="deletesubjectnode" title="remove subject-node">-</button>
+                 </div>
+            </div>
+            <!-- oninput='teststate.targetnodes = this.value; showjson();' -->
+            <br>
+            <b>Version</b>
+            <select id='testversion' onchange='teststate.testversion = this.value; showjson(); pushstate();'>
+                <option value='' style='display:none;'></option>
+                <option value='A'>A</option>
+                <option value='B'>B</option>
+            </select>
+            <br>
+            <br>
+            <b>This test ID</b>
+            <span id='thistestid'></span>
+            <br>
+            <br>
+            <b>Companion ID</b>
+            <input type='text' id='companionid' onblur='pushstate();' oninput='teststate.companionid = this.value; showjson(); this.style.backgroundColor = /^([0-9a-f]{32})?$/.test(this.value) ? "" : "#FFCCCC";'>
+            <br>
+            <br>
+            <label style='font-weight:bold;'>
+                <input type='checkbox' onclick='teststate.ispublic = this.checked; pushstate();' id='ispublic'> Make Test Public</label>
+            <br>
+        </span>
+        <br>
+        <hr>
+        <br>
+    </div>
+    <div id='testform' style='margin:1em;'>
+    </div>
+    <div id='editbuttons' style='margin: 1em;'>
+        <button onclick='newquestion("mc");'>add multiple choice</button>
+        <button onclick='newquestion("ms");'>add multiple select</button>
+        <button onclick='newquestion("cr");'>add constructed response</button>
+        <button id='undobutton2' onclick='popstate();' disabled>undo change</button>
+        <button id='redobutton2' onclick='redo();' disabled>redo change</button>
+    </div>
+    <br>
+    <hr>
+    <div style='display:none;'>
+        <div id='jsondiv'>
+            <br>
+            <br>
+            <textarea onblur='pushstate();' id='jsontext' rows="5" cols="60" oninput='var string = this.value.replace(/^\s+|\s+$/g, ""); var newstate = string === "" ? safeJSONparse(blankstate) : safeJSONparse(string); this.style.backgroundColor=(newstate ? "#FFF" : "#FCC"); if(newstate) teststate = newstate; render(istaking, false);'>{"title":"","questions":[]}</textarea>
+        </div>
+    </div>
+    <div class='testviewerclass' id='testviewer' style='display:none;'>
+        <h3>Test Results Viewer</h3>
+        <span style='position:absolute;top:0.75em;right:0.75em;white-space:nowrap;'>
+            <div class="pseudolink" style='vertical-align:middle;display:inline-block;margin-right:1em;' onclick='window.open(document.getElementById("tesetresultsiframe").getAttribute("src"), "_blank");'>Open in new tab &#8599;</div>
+            <button onclick='document.getElementById("puttesthere").innerHTML=""; document.getElementById("testviewer").style.display="none";'
+                style='font-weight:bold;vertical-align:middle;'>x</button>
+        </span>
+        <div id='puttesthere' style='position: absolute; top: 53px; height: calc(100% - 63px); width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: hidden; -webkit-overflow-scrolling: touch;'></div>
+    </div>
+</div>
+<div id='htmleditordiv' style='display:none;'>
+    <h3>HTML Editor</h3>
+    <span style='position:absolute;top:0.75em;right:0.75em;'>
+        <button id='editorFileUploadBtn'>file uploads</button>
+        <button onclick='document.getElementById("formulaeditordiv").style.display="";'>formula editor</button>
+        <button onclick='document.getElementById("htmleditordiv").style.display="none";'>discard</button>
+        <button onclick='lasttinymceobject[lasttinymcefield] = tinyMCE.activeEditor.getContent({format: "text"}).replace(/\n\r?/g, "<br>"); pushstate(); render(); document.getElementById("htmleditordiv").style.display="none";'>save (plain text)</button>
+        <button onclick='lasttinymceobject[lasttinymcefield] = tinyMCE.activeEditor.getContent().replace(/[\n\r]/g, ""); pushstate(); render(); document.getElementById("htmleditordiv").style.display="none";'>save</button>
+    </span>
+    <div id="tinymcediv" style="position: absolute; top: 53px; height: calc(100% - 63px); width: calc(100% - 18px); left: 8px; border: 1px solid black; background: #FFF; overflow: auto; -webkit-overflow-scrolling: touch;">
+        <textarea id="tinymceta" class="tinyClass" style="opacity: 0;"></textarea>
+    </div>
+</div>
+<div id='formulaeditordiv' style='display:none;'>
+    <h3>Formula Editor</h3>
+    <span style='position:absolute;top:0.75em;right:0.75em;'>
+        <button onclick='document.getElementById("formulaeditordiv").style.display="none";'>x</button>
+    </span>
+    <div id='formulaworkdiv' style='margin: 14px;/* position: absolute; *//* top: 53px; */height: 84%;/* left: 8px; */border: 1px solid black;background: rgb(255, 255, 255);width: auto;overflow: hidden;'>
+        <textarea id='mathjaxta' rows='4' style='width:80%;margin:1em;' oninput='mathjaxpreview(this);' placeholder='type formula here'></textarea>
+        <br>
+        <h3>Preview</h3>
+        <div id='mathjaxpreviewdiv' style='min-height:2em;'>
+
+        </div>
+        <h3>Text to Copy</h3>
+        <div class="tooltip">
+            <span class="tooltiptext" id="toolTip_MathJax">Click to Copy</span>
+            <textarea id='input_MathJax' rows=2 cols=50 onclick="copyData('MathJax')" onmouseout="updateToolTip('MathJax')" style='min-height:2em;'> 
+        </textarea>
+        </div>
+        <h3>Help</h3>
+        <a target='_blank' href='http://asciimath.org/'>AciiMath Home Page</a>&nbsp;&nbsp;&nbsp;
+        <a target='_blank' href='https://www.wamap.org/docs/asciimathref.html'>Symbol Reference</a>&nbsp;&nbsp;&nbsp;
+        <a target='_blank' href='http://www.wjagray.co.uk/maths/ASCIIMathTutorial.html'>AsciiMath Tutorial</a>&nbsp;&nbsp;&nbsp;
+        <select onchange='var el=document.getElementById("mathjaxta"); el.value = this.value; mathjaxpreview(el); this.value="";'>
+            <option value='' style='display:none;'>AsciiMath Examples</option>
+            <option value='x = (-b +- sqrt(b^2 - 4ac)) / (2a)'>Quadratic Formula</option>
+            <option value='root(3)(x + pi)'>Cube Root</option>
+            <option value='[(a_(11),...,a_(1n)), (vdots,ddots,vdots), (a_(m1),...,a_(mn))]'>Matrix</option>
+            <option value='sum_(n=1)^infty 1/n^2 = 1/1^2 + 1/2^2 + 1/3^2 +  ... &lt;= 1 + int_1^infty 1/x^2 dx = 1 + 1 = 2'>Sum and Integrals</option>
+
+        </select>
+    </div>
+</div>
+<div id='FileUploadDiv'>
+
+</div>
+<script>
+function createsubjectnodediv(){
+    var len = parseInt($('#reportingnodes').children().length);
+    var numofsubjects=parseInt($('#subject').children().length)-1;
+    if(len < numofsubjects){
+        var elemId=$('#reportingnodes div:last-child').attr('id');
+        var newId=parseInt(elemId.substring(14)) + 1;
+        var htmlStr=$('#reportingnodes div:last-child').html();
+        var elem=document.createElement('div');
+        elem.setAttribute('id','subjectnodediv'+newId);
+        elem.innerHTML = htmlStr;
+        document.getElementById('reportingnodes').appendChild(elem);  
+    }
+};
+
+function deletereportnodediv(el){
+    var len = $('#reportingnodes').children().length;
+    if(len > 1){
+        var parentId=$(el).parent().attr('id');
+        $('#'+parentId).remove();
+        setReportNodes();
+    }
+}
+
+function setReportNodes(){
+    if($('#repnodes:visible').length == 0){
+        teststate.targetnodes=null;
+    }
+    var len = $('#reportingnodes').children().length;
+    var subjectNodes=$('#reportingnodes').children();
+    var repNode=null;
+    for(var i=0;i<len;i++){
+        var el=subjectNodes[i];
+        var subject=$(el).find('.reportnodesubject').children("option:selected").text();
+        var subjectVal=$(el).find('.reportnodesubject').children("option:selected").val();
+        var result= $(el).find('#targetnodes').val();
+        if(subjectVal != 0 && result !=null && result !=""){
+            var subjectPrefix = getPrefixFromSubject(subject); 
+            var nodeIds=result.split(",");
+            nodeIds.forEach(nodeid => {
+            if(repNode !=null){
+                repNode = repNode+","+subjectPrefix+"-"+nodeid;
+            }else{
+                repNode = subjectPrefix+"-"+nodeid;
+            } 
+        });
+        }  
+    }
+    teststate.targetnodes = (teststate.targetnodes== null || teststate.targetnodes == undefined) ? repNode : teststate.targetnodes+","+repNode;
+    if($('#repnodes:visible').length == 1){
+        $('#repnodes').val(teststate.targetnodes);
+        $('#targetnodes').val('');
+    }
+    showjson(); 
+}
+</script>

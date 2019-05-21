@@ -1,0 +1,90 @@
+<div id='assignedtestsInner'>
+    <table style='margin:1em'>
+        <thead>
+            <tr>
+                <th>Locater Tool Name</th>
+                <th style='display:none;'>Pre/Post</th>
+                <th>Due Date</th>
+                <th>Password</th>
+                <th>Students</th>
+                <th style='display:none;'>Link</th>
+                <th>Edit</th>
+                <th>Report</th>
+        </thead>
+        <tbody>
+            <% var assignedTestObj=JSON.parse(JSON.stringify(assignedTests));
+                var jsonRosterObj=JSON.parse(JSON.stringify(rosters));
+                if(assignedTestObj!=null){
+                for(var i=0;i<Object.keys(assignedTestObj).length;i++){%>
+                <% var totalStds=Object.keys(assignedTestObj[i].studentDetails).length;
+                var option1= assignedTestObj[i].studentsCompleted +" / "+ totalStds; %>
+                    <tr id='assignedRow_<%=assignedTestObj[i].ID%>_<%=assignedTestObj[i].PASSWORD_ID%>'>
+                        <td>
+                            <div style='font-weight:bold;' id='testdId_<%=assignedTestObj[i].ID%>'>
+                                <%=assignedTestObj[i].TEST_TITLE%>
+                            </div>
+                            <div style='font-style:italic;margin:0.25em;text-overflow: ellipsis;max-width: 43ch;overflow-wrap: break-word;'>
+                                <%=assignedTestObj[i].NOTE_TO_SELF%>
+                            </div>
+                        </td>
+                        <td style='text-align:center;display:none;'>Pre/Post</td>
+                        <td title='<%=assignedTestObj[i].DUE_TIMESTAMP%> <%=assignedTestObj[i].DUE_HOURS%>' style="margin-right:3px;margin-left:3px;">
+                            <%=assignedTestObj[i].DUE_DATE%>&nbsp;&nbsp;&nbsp;
+                                <%=assignedTestObj[i].DUE_TIME%>
+                        </td>
+                        <td style='text-align:center;'>
+                            <%=assignedTestObj[i].PASSWORD%>
+                        </td>
+                        <td>
+                            <select id='studentlist_<%=assignedTestObj[i].PASSWORD%>' style='width:10em;overflow-y: hidden;' onchange="locater.setDefaultStudent('<%=assignedTestObj[i].PASSWORD%>');">
+                                <option id='0' style='display:none'>
+                                    <%=option1%>
+                                </option>
+                                <% if(assignedTestObj[i].studentsCompleted >0){%>
+                                    <option id='completed '>
+                                        <label>Completed:</label>
+                                    </option>
+
+                                    <% for(var j=0;j<Object.keys(assignedTestObj[i].studentDetails).length;j++){%>
+                                        <% if(assignedTestObj[i].studentDetails[j].ISCOMPLETE==true){%>
+                                            <option id='<%=assignedTestObj[i].studentDetails[j].STUDENT_ID%>'>&nbsp;&nbsp;
+                                                <%= locater.getStudentName(assignedTestObj[i].studentDetails[j].USERNAME)%>
+                                            </option>
+                                            <%};};%>
+                                                <option> </option>
+                                                <%};%>
+
+                                                    <% if(assignedTestObj[i].incompleteCount >0){%>
+                                                        <option id='notcompleted'>
+                                                            </br>
+                                                            </br>
+                                                            <label>Not Completed:</label>
+                                                        </option>
+                                                        <% for(var k=0;k<Object.keys(assignedTestObj[i].studentDetails).length;k++){%>
+                                                            <% if(assignedTestObj[i].studentDetails[k].ISCOMPLETE==false){%>
+                                                                <option id='<%=assignedTestObj[i].studentDetails[k].STUDENT_ID%>'>&nbsp;&nbsp;
+                                                                    <%= locater.getStudentName(assignedTestObj[i].studentDetails[k].USERNAME)%>
+                                                                </option>
+                                                                <%};};%>
+                                                                    <%};%>
+                            </select>
+                        </td>
+                        <td style=' text-align:center;display:none; '>
+                            <a href='testtaker ' target='_blank '>link</a>
+                        </td>
+                        <td style='text-align:center; '>
+                            <a href='#' onclick="event.preventDefault();locater.editTestDetails('<%=JSON.stringify(assignedTestObj[i])%>','<%=JSON.stringify(jsonRosterObj)%>');return false;">Edit</a>
+                        </td>
+                        <td style='text-align:center; '>
+                            <% if(assignedTestObj[i].studentsCompleted >0){%>
+                                <a href='#' onclick="locater.viewTestReport('<%=JSON.stringify(assignedTestObj[i])%>')">View</a>
+                                <%};%>
+                        </td>
+                    </tr>
+                    <%};};%>
+                        <tr>
+                            <td colspan='8 ' style='border:none;'></td>
+                        </tr>
+        </tbody>
+    </table>
+</div>
