@@ -221,6 +221,18 @@ These instructions have been tested on RHEL 7.6 and Amazon Linux 2.
     tar -xvf ~/<open-source-artifact.tar.gz>
     ```
 
+## Application Dependencies
+-   Install Locator Tool application dependencies
+    ```
+    APP_PATH=/var/www/elm/nodelocater/
+    mkdir -p ${APP_PATH}
+    cd ~
+    wget https://github.com/enhancedlearningmapsopensource/LocaterTool/releases/download/LT-2019-05-21/LocaterTool20190521.tar.gz -O elm-lt-release.tar.gz
+    cd ${APP_PATH}
+    pwd
+    tar -xvf ~/elm-lt-release.tar.gz
+    ```
+
 ## Application Configuration
 -   Update Locator Tool Code configuration
     ```
@@ -382,8 +394,10 @@ __*** These steps resume configuration on the Locater Tool server__
     ```
     cd ${APP_PATH}
     cd scripts/
-    mysql -h <modern_copy_server> -u elm_debug_user -p elm_release <elm-lt-backup-20190419a.sql
-    mysql -h <modern_copy_server> -u elm_debug_user -p elm_release <elm-lt-backup-20190419b.sql
+    wget https://github.com/enhancedlearningmapsopensource/Materials/blob/master/elm-lt-01.sql?raw=true -O elm-lt-01.sql
+    wget https://github.com/enhancedlearningmapsopensource/Materials/blob/master/elm-lt-02.sql?raw=true -O elm-lt-02.sql
+    mysql -h <modern_copy_server> -u elm_debug_user -p elm_release <elm-lt-01.sql
+    mysql -h <modern_copy_server> -u elm_debug_user -p elm_release <elm-lt-02.sql
     ```
 
 ## Setting up pm2 to run Locater Tool 
