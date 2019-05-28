@@ -440,6 +440,7 @@ __*** These steps resume configuration on the Locater Tool server__
     pm2 start app
     pm2 ls
     pm2 startup
+    # Review the output from the pm2 startup command. If prompted, run the specified command to setup the Startup Script.
     pm2 save
     ```
 
