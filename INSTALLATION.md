@@ -207,22 +207,8 @@ These instructions have been tested on RHEL 7.6 and Amazon Linux 2.
     ```
 
 
-# <span id="_Toc3885412" class="anchor">Install Locater Tool Software</span>
-
 ## Application Source
 -   Install Locator Tool source code
-    ```
-    APP_PATH=/var/www/elm/nodelocater/
-    mkdir -p ${APP_PATH}
-    cd ~
-    wget <open-source-artifact.tar.gz>
-    cd ${APP_PATH}
-    pwd
-    tar -xvf ~/<open-source-artifact.tar.gz>
-    ```
-
-## Application Dependencies
--   Install Locator Tool application dependencies
     ```
     APP_PATH=/var/www/elm/nodelocater/
     mkdir -p ${APP_PATH}
@@ -231,6 +217,52 @@ These instructions have been tested on RHEL 7.6 and Amazon Linux 2.
     cd ${APP_PATH}
     pwd
     tar -xvf ~/elm-lt-release.tar.gz
+    ```
+
+## Application Dependencies
+-   Install Locator Tool application dependencies
+    ```
+    APP_PATH=/var/www/elm/nodelocater/
+    APP_DEP_PATH=${APP_PATH}public/js/external/
+    mkdir -p ${APP_DEP_PATH}
+
+    cd ~
+
+    # MathJax
+    wget https://github.com/mathjax/MathJax/archive/2.7.4.tar.gz -O mathjax.tar.gz
+    tar -xvf mathjax.tar.gz
+    cp -p MathJax-2.7.4 ${APP_DEP_PATH}mathjax
+    cp -p ${APP_DEP_PATH}mathjax/MathJax.js ${APP_DEP_PATH}
+
+    # tinymce
+    wget https://github.com/tinymce/tinymce/archive/4.7.11.tar.gz -O tinymce.tar.gz
+    tar -xvf tinymce.tar.gz
+    cp -p tinymce-4.7.11 ${APP_DEP_PATH}tinymce
+
+    cd ${APP_DEP_PATH}
+
+    # can.js
+    wget https://cdnjs.cloudflare.com/ajax/libs/can.js/3.12.1/can.all.js
+    wget wget "http://bitbuilder.herokuapp.com/can.custom.js?configuration=jquery&minify=true&plugins=can%2Fconstruct%2Fconstruct&plugins=can%2Fmap%2Fmap&plugins=can%2Flist%2Flist&plugins=can%2Fcompute%2Fcompute&plugins=can%2Fmodel%2Fmodel&plugins=can%2Fview%2Fview&plugins=can%2Fview%2Fhref%2Fhref&plugins=can%2Fcontrol%2Fcontrol&plugins=can%2Froute%2Froute&plugins=can%2Fcontrol%2Froute%2Froute&plugins=can%2Fview%2Fejs%2Fejs&plugins=can%2Fconstruct%2Fproxy%2Fproxy" -O can.jquery-all.js
+    wget "http://bitbuilder.herokuapp.com/can.custom.js?configuration=jquery&plugins=can%2Fcomponent%2Fcomponent&plugins=can%2Fconstruct%2Fconstruct&plugins=can%2Fmap%2Fmap&plugins=can%2Flist%2Flist&plugins=can%2Fcompute%2Fcompute&plugins=can%2Fmodel%2Fmodel&plugins=can%2Fview%2Fview&plugins=can%2Fview%2Fhref%2Fhref&plugins=can%2Fcontrol%2Fcontrol&plugins=can%2Froute%2Froute&plugins=can%2Fcontrol%2Froute%2Froute&plugins=can%2Fview%2Fmustache%2Fmustache" -O can.custom.js
+
+    # EJS
+    wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/embeddedjavascript/ejs_production.js -O ejs.js
+
+    # interact.js
+    wget https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.8/interact.js
+
+    # jquery
+    wget https://code.jquery.com/jquery-3.3.1.min.js -O jquery.min.js
+
+    # jquery-ui
+    wget https://code.jquery.com/ui/1.12.1/jquery-ui.min.js 
+
+    # Modernizr
+    wget https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.js -O modernizr-2.6.2.js
+
+    # underscore.js 
+    wget https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js
     ```
 
 ## Application Configuration
