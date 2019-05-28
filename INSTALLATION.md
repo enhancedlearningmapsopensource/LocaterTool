@@ -231,13 +231,13 @@ These instructions have been tested on RHEL 7.6 and Amazon Linux 2.
     # MathJax
     wget https://github.com/mathjax/MathJax/archive/2.7.4.tar.gz -O mathjax.tar.gz
     tar -xvf mathjax.tar.gz
-    cp -p MathJax-2.7.4 ${APP_DEP_PATH}mathjax
+    mv MathJax-2.7.4 ${APP_DEP_PATH}mathjax
     cp -p ${APP_DEP_PATH}mathjax/MathJax.js ${APP_DEP_PATH}
 
     # tinymce
     wget https://github.com/tinymce/tinymce/archive/4.7.11.tar.gz -O tinymce.tar.gz
     tar -xvf tinymce.tar.gz
-    cp -p tinymce-4.7.11 ${APP_DEP_PATH}tinymce
+    mv tinymce-4.7.11 ${APP_DEP_PATH}tinymce
 
     cd ${APP_DEP_PATH}
 
