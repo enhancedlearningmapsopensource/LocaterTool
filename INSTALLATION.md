@@ -235,9 +235,9 @@ These instructions have been tested on RHEL 7.6 and Amazon Linux 2.
     cp -p ${APP_DEP_PATH}mathjax/MathJax.js ${APP_DEP_PATH}
 
     # tinymce
-    wget https://github.com/tinymce/tinymce/archive/4.7.11.tar.gz -O tinymce.tar.gz
-    tar -xvf tinymce.tar.gz
-    mv tinymce-4.7.11 ${APP_DEP_PATH}tinymce
+    wget http://download.tiny.cloud/tinymce/community/tinymce_4.7.11_dev.zip -O tinymce_dev.zip
+    unzip tinymce_dev.zip
+    mv tinymce/js/tinymce ${APP_DEP_PATH}
 
     cd ${APP_DEP_PATH}
 
