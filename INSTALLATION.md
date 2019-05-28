@@ -213,7 +213,7 @@ These instructions have been tested on RHEL 7.6 and Amazon Linux 2.
     APP_PATH=/var/www/elm/nodelocater/
     mkdir -p ${APP_PATH}
     cd ~
-    wget https://github.com/enhancedlearningmapsopensource/LocaterTool/releases/download/LT-2019-05-21/LocaterTool20190521.tar.gz -O elm-lt-release.tar.gz
+    wget https://github.com/enhancedlearningmapsopensource/LocaterTool/releases/download/LT-2019-05-28/LocaterTool20190528.tar.gz -O elm-lt-release.tar.gz
     cd ${APP_PATH}
     pwd
     tar -xvf ~/elm-lt-release.tar.gz
