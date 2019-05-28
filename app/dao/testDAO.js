@@ -919,7 +919,7 @@
                     "if((IFNULL(options.ANTI_NODES,'')!='' or IFNULL(options.NODES,'') !=''),CONCAT(CHAR(options.OPTION_ORDER+64),':',IFNULL(options.ANTI_NODES,''),IFNULL(options.NODES,'')),'') AS COMMON_NODES," +
                     "count(stdresp.RESPONSE_VALUE REGEXP CONCAT(',*',options.OPTION_ORDER,',*')) AS NO_OF_INCORRECT " +
                     "FROM STUDENT_RESPONSE stdresp " +
-                    "LEFT JOIN ELM_OPTIONS options ON options.QUESTION_ID=stdresp.QUESTION_ID AND options.ISVALID=0 " +
+                    "LEFT JOIN ELM_OPTIONS options ON options.QUESTION_ID=stdresp.QUESTION_ID " +
                     "INNER JOIN ELM_QUESTIONS questions ON questions.ID=stdresp.QUESTION_ID " +
                     "INNER JOIN ELM_TESTS tests ON tests.ID=stdresp.TEST_ID " +
                     "LEFT JOIN ELM_NODE antinode ON (antinode.TEXTID=CONCAT('','',options.ANTI_NODES) OR antinode.TEXTID=CONCAT('','',options.ANTI_NODES)) " +

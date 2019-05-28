@@ -289,6 +289,10 @@ var locater = new function () {
         });
     }
 
+    this.showMessage = function () {
+        $('#warningMsg').show();
+    } 
+
     this.addStudent = function (studentId, studentName, rosterId, reportVal, stdLength) {
         var rname;
         var stdname=studentName.toLowerCase();
@@ -309,7 +313,7 @@ var locater = new function () {
             "type='checkbox' name='studentnames_" + rosterId + "'>" +
             " </td>" +
             " <td>" +
-            " <input id='realname"+rosterId+"_"+studentId+"' class='realname_"+underscored+"' onkeydown='if(event.keyCode === 13) movedown(this);' "+
+            " <input id='realname"+rosterId+"_"+studentId+"' class='realname_"+underscored+"' onkeydown='if(event.keyCode === 13) movedown(this);locater.showMessage();' "+
             " value='"+rname+"' type='text'/>"+
             "</td >" +
             "<td id='table_row" + studentId + "' style='text-transform:capitalize;white-space:no-wrap; '>" +
