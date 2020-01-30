@@ -41,7 +41,7 @@
     "pbkdf2": "^3.0.14",
     "pikaday": "^1.7.0",
     "react": "^15.6.2",
-    "tinymce": "^4.7.10",
+    "tinymce": "^4.9.7",
     "underscore": "^1.8.3",
     "winston": "^1.1.2"
   },
