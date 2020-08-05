@@ -27,7 +27,7 @@
     "cryptr": "^4.0.2",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
-    "express-fileupload": "^0.4.0",
+    "express-fileupload": "^1.1.9",
     "express-session": "^1.15.6",
     "interact.js": "^1.2.8",
     "jquery": "^3.3.1",
